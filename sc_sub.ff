@@ -1,0 +1,47 @@
+/*
+ * Copyright (C) 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+ lc_lang_c2sc = "LC caps to smallcaps subtable"
+ AddLookup("LC caps to smallcaps", "gsub_single", 0, [["c2sc",[["latn",["dflt"]],["cyrl",["dflt"]]]]])
+ AddLookupSubtable("LC caps to smallcaps", lc_lang_c2sc)
+ lc_lang_smcp = "LC small to smallcaps subtable"
+ AddLookup("LC small to smallcaps", "gsub_single", 0, [["smcp",[["latn",["dflt"]],["cyrl",["dflt"]]]]])
+ AddLookupSubtable("LC small to smallcaps", lc_lang_smcp)
+ 
+ SelectWorthOutputting() 
+ selection=$selection
+ j=SizeOf(selection)
+ SelectNone()
+ i=0
+ #foreach
+ while(i<j)
+  if ( selection[i] && SelectIf(i) == 1)
+   name = GlyphInfo ("Name")
+   cap_end=Strstr(name, ".sc")
+   if (cap_end > 0)
+    cap_name=Strsub(name, 0, cap_end)
+    if (SelectIf(cap_name) == 1)
+     AddPosSub(lc_lang_c2sc, name);
+    endif
+    low = UCodePoint(ToLower(UnicodeFromName(cap_name)))
+    Select(low)
+    AddPosSub(lc_lang_smcp, name);
+   endif
+  endif
+ i++ 
+ endloop
+ SelectNone()

@@ -1,0 +1,60 @@
+VERSION:=$(shell date +"%Y%m%d")
+PKGNAME=font-helpers
+DOCUMENTS=COPYING.scripts README.scripts
+FFSCRIPTS=add_accented.ff \
+        add_anchor_ext.ff \
+        add_anchor_med.ff \
+        add_anchor_y.ff \
+        add_ipa.ff \
+        add_private.ff \
+        add_supnum.ff \
+        alt_sub.ff \
+        anchors.ff \
+        case_sub.ff \
+        combining.ff \
+        combining_mono.ff \
+        cop_glyph.ff \
+        cop_kern_acc.ff \
+        cop_kern.ff \
+        cop_kern_left.ff \
+        cop_kern_mult.ff \
+        cop_kern_right.ff \
+        copy_anchors_acc.ff \
+        dub_aligned.ff \
+        dub_glyph_ch.ff \
+        dub_glyph.ff \
+        getcvt.ff \
+        hflip_glyph.ff \
+        inst_acc.py \
+        liga_sub.ff \
+        make_bottomaccent.ff \
+        make_cap_accent.ff \
+        make_comb.ff \
+        make_digraph.ff \
+        make_double.ff \
+        make_dup_rot.ff \
+        make_dup_vertshift.ff \
+        make_kern.ff \
+        make_kern_sc.ff \
+        make_superscript.ff \
+        mergekern.ff \
+        new_glyph.ff \
+        same_cyrext.ff \
+        same_cyr_it.ff \
+        same_cyr_rm.ff \
+        same_kern.ff \
+        same_kern_sc.ff \
+        sc_sub.ff \
+        serbsubs.ff \
+        spaces_dashes.ff \
+        sub_onum.ff \
+        tab_sub.ff
+
+COMPRESS=xz -9
+
+all: 
+
+dist:
+	tar -cvf $(PKGNAME)-src-$(VERSION).tar Makefile.scripts \
+	$(FFSCRIPTS) $(DOCUMENTS)
+	$(COMPRESS) $(PKGNAME)-src-$(VERSION).tar

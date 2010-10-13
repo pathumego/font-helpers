@@ -1,0 +1,51 @@
+/*
+ * Copyright (C) 2008, 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for copying Latin letters into similar basic
+# Cyrillic ones in italic font
+
+dub_glyph_ch.ff("A",0u410)
+dub_glyph_ch.ff("B",0u412)
+dub_glyph_ch.ff("E",0u415)
+dub_glyph_ch.ff("H",0u41d)
+dub_glyph_ch.ff("I",0u406)
+#dub_glyph_ch.ff("K",0u41a)
+dub_glyph_ch.ff("M",0u41c)
+dub_glyph_ch.ff("O",0u41e)
+dub_glyph_ch.ff("P",0u420)
+dub_glyph_ch.ff("T",0u422)
+dub_glyph_ch.ff("X",0u425)
+dub_glyph_ch.ff("C",0u421)
+dub_glyph_ch.ff("a","uni0430")
+dub_glyph_ch.ff("e","uni0435")
+dub_glyph_ch.ff("u",0u438) # если n и u равны по ширине
+dub_glyph_ch.ff("o","uni043e")
+dub_glyph_ch.ff("p","uni0440")
+dub_glyph_ch.ff("c","uni0441")
+dub_glyph_ch.ff("n",0u43f)
+dub_glyph_ch.ff("m",0u442)
+dub_glyph_ch.ff("x","uni0445")
+dub_glyph_ch.ff("s","uni0455")
+dub_glyph_ch.ff("S","uni0405")
+dub_glyph_ch.ff("j","uni0458")
+dub_glyph_ch.ff("J","uni0408")
+dub_glyph_ch.ff("Idieresis","uni0407")
+dub_glyph_ch.ff("idieresis","uni0457")
+dub_glyph_ch.ff("Edieresis","uni0401")
+dub_glyph_ch.ff("edieresis","uni0451")
+dub_glyph_ch.ff("i",0u456)
+dub_glyph_ch.ff("y",0u443)

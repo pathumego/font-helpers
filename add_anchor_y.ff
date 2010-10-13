@@ -1,0 +1,41 @@
+/*
+ * Copyright (C) 2006 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for addition of anchor to glyph
+#
+
+class = $1
+type = $2
+y_position = $3  # y coordinate, at which width is measured, integer 
+o_height = $4  # height of anchor mark, integer
+tan_it = $5    # tangent of italic angle, real
+if ($argc > 6) 
+ delta_x = $6 
+else
+ delta_x = 0 
+endif
+
+ if ( WorthOutputting() )
+#  bbox = GlyphInfo("BBox")
+#  if (position == 3)
+   x_max = GlyphInfo("Xextrema", y_position)
+#  Print(GlyphInfo("Name")," ",x_max," ",class," ",type," ",y_position," ",o_height)
+  if(x_max[1] >= x_max[0])
+   x_ext = (x_max[1] - x_max[0])*0.5 + x_max[0]
+   AddAnchorPoint(class, type, Round(x_ext + (y_position - o_height)*tan_it + delta_x), o_height)
+  endif
+ endif

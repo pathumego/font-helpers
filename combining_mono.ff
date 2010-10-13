@@ -1,0 +1,142 @@
+/*
+ * Copyright (C) 2008 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making combining glyphs
+
+#italic_angle=$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Reencode("unicode")
+
+dub_glyph.ff("grave","gravecomb")
+dub_glyph.ff("acute","acutecomb")
+dub_glyph.ff("circumflex","uni0302")
+dub_glyph.ff("tilde","uni0303")
+dub_glyph.ff("macron","uni0304")
+dub_glyph.ff("breve","uni0306")
+dub_glyph.ff("dotaccent","uni0307")
+dub_glyph.ff("dieresis","uni0308")
+dub_glyph.ff("space_hookabovecomb","uni0309")
+dub_glyph.ff("ring","uni030A")
+dub_glyph.ff("hungarumlaut","uni030B")
+dub_glyph.ff("caron","uni030C")
+dub_glyph.ff("space_uni030D","uni030D")
+dub_glyph.ff("space_uni030E","uni030E")
+dub_glyph.ff("space_uni030F","uni030F")
+dub_glyph.ff("uni1FBF","uni0313")
+dub_glyph.ff("uni1FFE","uni0314")
+dub_glyph.ff("uni02CE","uni0316")
+dub_glyph.ff("uni02CF","uni0317")
+dub_glyph.ff("cedilla","uni0327")
+dub_glyph.ff("ogonek","uni0328")
+dub_glyph.ff("space_uni0321","uni0321")
+dub_glyph.ff("space_uni0322","uni0322")
+dub_glyph.ff("space_uni032A","uni032A")
+dub_glyph.ff("space_uni032B","uni032B")
+dub_glyph.ff("underscore","uni0332")
+dub_glyph.ff("slash","uni0338")
+dub_glyph.ff("space_uni033A","uni033A")
+dub_glyph.ff("space_uni033B","uni033B")
+dub_glyph.ff("space_uni033C","uni033C")
+dub_glyph.ff("space_uni034D","uni034D")
+if (!WorthOutputting("uni0311") )
+ Select("uni0306")
+ Copy()
+ Select("uni0311")
+ Paste()
+ Rotate(180)
+endif
+#if (!WorthOutputting("space_uni030F") )
+# Select("hungarumlaut")
+# width = GlyphInfo("RBearing") - GlyphInfo("LBearing") - GlyphInfo("Width")
+# Copy()
+# Select("uni030F")
+# Paste()
+# HFlip()
+# CorrectDirection()
+# Move(width,0)
+# RoundToInt()
+# AutoHint()
+#endif
+hflip_glyph.ff("hungarumlaut","space_uni030F",$italicangle*100)
+dub_glyph.ff("space_uni030F","uni030F")
+make_dup_rot.ff("breve.cap","space_uni0311.cap",tan_it,-10000)
+hflip_glyph.ff("hungarumlaut.cap","space_uni030F.cap",$italicangle*100)
+
+dub_glyph.ff("grave.cap","uni0300.cap")
+dub_glyph.ff("acute.cap","uni0301.cap")
+dub_glyph.ff("circumflex.cap","uni0302.cap")
+dub_glyph.ff("tilde.cap","uni0303.cap")
+dub_glyph.ff("macron.cap","uni0304.cap")
+dub_glyph.ff("breve.cap","uni0306.cap")
+dub_glyph.ff("dotaccent.cap","uni0307.cap")
+dub_glyph.ff("dieresis.cap","uni0308.cap")
+dub_glyph.ff("ring.cap","uni030A.cap")
+dub_glyph.ff("hungarumlaut.cap","uni030B.cap")
+dub_glyph.ff("caron.cap","uni030C.cap")
+dub_glyph.ff("space_uni030F.cap","uni030F.cap")
+dub_glyph.ff("space_uni0311.cap","uni0311.cap")
+
+make_dup_vertshift.ff("uni0307","uni0323",1.1,tan_it) # dotbelowcomb
+make_dup_vertshift.ff("uni0308","uni0324",1.1,tan_it)
+make_dup_vertshift.ff("uni030C","uni032C",1.1,tan_it)
+make_dup_vertshift.ff("uni0302","uni032D",1.1,tan_it)
+make_dup_vertshift.ff("uni0306","uni032E",1.1,tan_it)
+make_dup_vertshift.ff("uni0307.cap","uni0323.cap",1.1,tan_it) 
+make_dup_vertshift.ff("uni0308.cap","uni0324.cap",1.1,tan_it)
+make_dup_vertshift.ff("uni030A.cap","uni0325.cap",1.1,tan_it)
+make_dup_vertshift.ff("uni0302.cap","uni032D.cap",1.1,tan_it)
+make_dup_vertshift.ff("uni0306.cap","uni032E.cap",1.1,tan_it)
+make_dup_vertshift.ff("uni0303.cap","uni0330.cap",1.2,tan_it)
+
+#make_dup_vertshift.ff("underscore","uni0305",5.2,tan_it) # !!! Redesign
+make_cap_accent.ff("underscore","uni0305","macron",tan_it)
+make_dup_vertshift.ff("quoteright","uni0315",-0.2,tan_it)
+make_dup_vertshift.ff("advancing","uni0318",1.2,tan_it)
+make_dup_vertshift.ff("retracting","uni0319",1.2,tan_it)
+make_dup_vertshift.ff("uni02D4","uni031D",1.2,tan_it)
+make_dup_vertshift.ff("uni02D5","uni031E",1.2,tan_it)
+make_dup_vertshift.ff("uni02D6","uni031F",1.2,tan_it)
+make_dup_vertshift.ff("uni02D7","uni0320",1.2,tan_it)
+make_dup_vertshift.ff("tilde","uni0330",1.2,tan_it)
+make_dup_vertshift.ff("macron","uni0331",1.2,tan_it)
+make_dup_vertshift.ff("tilde","uni0334",0.5,tan_it)
+make_dup_vertshift.ff("uni0311","uni032F",1.2,tan_it)
+make_dup_vertshift.ff("ring","uni0325",1.1,tan_it)
+make_dup_vertshift.ff("uni02FA","uni031A",-0.2,tan_it)
+#make_dup_vertshift.ff("uni02DF","uni033D",-0.2,tan_it)
+dub_glyph.ff("uni02DF","uni033D")
+dub_aligned.ff("uni032A","uni0346","tilde",tan_it)
+#make_dup_vertshift.ff("uni032A","uni0346",8.0,tan_it)
+make_dup_vertshift.ff("uniFE66","uni0347",1.2,tan_it)
+make_dup_vertshift.ff("uni030E","uni0348",1.2,tan_it)
+make_dup_vertshift.ff("uni02FA","uni0349",1.1,tan_it)
+make_cap_accent.ff("longleveltone","uni02CD","underscore",tan_it)
+make_cap_accent.ff("uni02CC","uni0329","uni031F",tan_it)
+make_cap_accent.ff("uni0304.cap","uni0331.cap","uni0331",tan_it)
+dub_glyph.ff("uni02CD","uni0331")
+make_dup_rot.ff("uni032A","uni033A",tan_it,-10000)
+dub_aligned.ff("uni02BE","uni0339","uni0330",tan_it)
+dub_aligned.ff("uni02BF","uni031C","uni0330",tan_it)
+#make_dup_vertshift.ff("uni02BE","uni0339",1.2,tan_it)
+#make_dup_vertshift.ff("uni02BF","uni031C",1.2,tan_it)
+make_dup_rot.ff("uni0361","uni035D",tan_it,-10000)
+make_dup_vertshift.ff("uni035D","uni035C",1.3,tan_it)
+make_dup_rot.ff("uni0318","uni0319",tan_it,-10000)
+
+Reencode("unicode")

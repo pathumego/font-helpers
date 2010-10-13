@@ -1,0 +1,102 @@
+/*
+ * Copyright (C) 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+liga_tag = "liga"
+lat_lang_liga =  "Latin ligatures subtable"
+AddLookup("Latin ligatures", "gsub_ligature", 0, [[liga_tag,[["latn",["dflt","NLD ","VIT ","TRK ","AZE "]]]]])
+AddLookupSubtable("Latin ligatures", lat_lang_liga)
+lat_tur_lang_liga =  "Latin ligatures excepting Turkic subtable"
+AddLookup("Latin ligatures excepting Turkic", "gsub_ligature", 0, [[liga_tag,[["latn",["dflt","NLD ","VIT "]]]]])
+AddLookupSubtable("Latin ligatures excepting Turkic", lat_tur_lang_liga)
+cyr_lang_liga =  "Cyrillic ligatures subtable"
+AddLookup("Cyrillic ligatures", "gsub_ligature", 0, [[liga_tag,[["cyrl",["dflt","MKD ","SRB "]]]]])
+AddLookupSubtable("Cyrillic ligatures", cyr_lang_liga)
+
+if(WorthOutputting("ff"))
+ Select("ff")
+ AddPosSub(lat_lang_liga,"f f")
+endif
+if(WorthOutputting("fi"))
+ Select("fi")
+ AddPosSub(lat_tur_lang_liga,"f i")
+endif
+if(WorthOutputting("fl"))
+ Select("fl")
+ AddPosSub(lat_lang_liga,"f l")
+endif
+if(WorthOutputting("ffi"))
+ Select("ffi")
+ AddPosSub(lat_tur_lang_liga,"f f i")
+ AddPosSub(lat_tur_lang_liga,"ff i")
+endif
+if(WorthOutputting("ffl"))
+ Select("ffl")
+ AddPosSub(lat_lang_liga,"f f l")
+ AddPosSub(lat_lang_liga,"ff l")
+endif
+if(WorthOutputting("ij"))
+ lat_nld_lang_liga =  "Latin Dutch ligatures subtable"
+ AddLookup("Latin Dutch ligatures", "gsub_ligature", 0, [[liga_tag,[["latn",["NLD "]]]]])
+ AddLookupSubtable("Latin Dutch ligatures", lat_nld_lang_liga)
+ Select("ij")
+ AddPosSub(lat_nld_lang_liga,"i j")
+if(WorthOutputting("IJ"))
+ Select("IJ")
+ AddPosSub(lat_nld_lang_liga,"I J")
+endif
+endif
+if(WorthOutputting("iacute"))
+ Select("iacute")
+ AddPosSub(lat_tur_lang_liga,"i acutecomb")
+ AddPosSub(cyr_lang_liga,"afii10103 acutecomb")
+endif
+if(WorthOutputting("igrave"))
+ Select("igrave")
+ AddPosSub(lat_tur_lang_liga,"i gravecomb")
+endif
+if(WorthOutputting("icircumflex"))
+ Select("icircumflex")
+ AddPosSub(lat_tur_lang_liga,"i uni0302") #circumflexcomb
+endif
+if(WorthOutputting("imacron"))
+ Select("imacron")
+ AddPosSub(lat_tur_lang_liga,"i uni0304") #macroncomb
+endif
+if(WorthOutputting("ibreve"))
+ Select("ibreve")
+ AddPosSub(lat_tur_lang_liga,"i uni0306") #brevecomb
+endif
+if(WorthOutputting("idieresis"))
+ Select("idieresis")
+ AddPosSub(lat_tur_lang_liga,"i uni0308") #dieresiscomb
+endif
+if(WorthOutputting("icaron"))
+ Select("icaron")
+ AddPosSub(lat_tur_lang_liga,"i uni030C") #caroncomb
+endif
+if(WorthOutputting("jcircumflex"))
+ Select("jcircumflex")
+ AddPosSub(lat_lang_liga,"j uni0302") #circumflexcomb
+endif
+if(WorthOutputting("jcaron"))
+ Select("jcaron")
+ AddPosSub(lat_lang_liga,"j uni030C") #caroncomb
+endif
+if(WorthOutputting("Aogonek"))
+ Select("Aogonek")
+ AddPosSub(lat_lang_liga,"A uni0328")
+endif

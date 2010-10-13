@@ -1,0 +1,93 @@
+/* Copyright (C) 2009 Andrey V. Panov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * This script adds an array of values to existing PS private entry checking
+ * for duplication of the values and sorting them
+ *
+ */
+
+entry = $1 # PS private entry (string)
+new_values = $2 # an array of integer values to be added to the entry
+max_size = $3 # maximum allowed size for the entry
+
+# Parse existing key
+pr_string = GetPrivateEntry(entry)
+pr_string = Strsub(pr_string,1,Strlen(pr_string)-1)
+private = StrSplit(pr_string," ")
+size_ar = SizeOf(private)
+private_int = Array(size_ar)
+i = 0
+while (i < size_ar)
+ private_int[i] = Strtol(private[i])
+ i++
+endloop
+size_new =  SizeOf(new_values)
+# squeeze new_values
+j = 0
+while (j < size_new)
+ i = j + 1
+ while (i < size_new)
+  if(new_values[j] == new_values[i])
+   new_values[i] = new_values[size_new - 1]
+   new_values[size_new - 1] = 0
+   size_new--
+  endif
+  i++
+ endloop
+ j++
+endloop
+#Print(new_values)
+j = 0
+k = size_ar
+while (j < size_new && k < max_size)
+ check = 1
+ i = 0
+ while (i < size_ar)
+  if ( private_int[i] == new_values[j])
+   check = 0
+  endif
+  i++
+ endloop
+ if (check)
+  private_int = private_int + new_values[j]
+  k++
+ endif
+ j++
+endloop
+# Sort the array
+size_ar = SizeOf(private_int)
+j = 0
+while (j < size_ar)
+ i = j + 1
+ while (i < size_ar)
+  if(private_int[j] > private_int[i])
+   temp = private_int[i]
+   private_int[i] = private_int[j]
+   private_int[j] = temp
+  endif
+  i++
+ endloop
+ j++
+endloop
+
+#Print(private_int)
+string = "[" + ToString(private_int[0])
+i = 1
+while (i < size_ar)
+ string += " " + ToString(private_int[i])
+ i++
+endloop
+string += "]"
+ChangePrivateEntry(entry,string)

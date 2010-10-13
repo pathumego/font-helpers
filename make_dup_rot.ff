@@ -1,0 +1,72 @@
+/*
+ * Copyright (C) 2008 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+first_glyph = $1
+second_glyph = $2
+tan_it = $3
+y_origin = $4 # y coordinate of origin of rotation (usually [x|X] height / 2)
+	      # if y_origin = -10000 use center of the glyph
+if ($argc > 5)
+ h_offset = $5 # shift of rotated glyph
+else
+ h_offset = 0
+endif
+if ($argc > 6)
+ copy = $6 # boolean, makes copy instead of reference if != 0
+else
+ copy = 1
+endif
+#vert_offset = $5
+
+if (InFont(first_glyph))
+ if ( WorthOutputting(first_glyph) )
+  if (!InFont(second_glyph))
+   new_glyph.ff(second_glyph)
+  endif
+   if ( WorthOutputting(second_glyph) )
+    return
+   endif
+
+  Select (first_glyph)
+  bbox = GlyphInfo ("BBox")
+  # char_height = bbox[3]
+  width = GlyphInfo ("Width")
+  if (copy)
+   Copy ()
+  else
+   CopyReference ()
+  endif
+  Select (second_glyph)
+  Paste ()
+  if (y_origin == -10000)
+   Rotate (180)
+  else
+   Rotate (180, Round(width/2.0 - y_origin*tan_it), y_origin)
+  endif
+  if (h_offset != 0)
+   Move (h_offset,0)
+   SetWidth (width)
+  endif
+  # Move (char_height*vert_offset*tan_it,-char_height*vert_offset)
+  # SetWidth (width)
+  RoundToInt ()
+  CanonicalStart()
+  CanonicalContours()
+  AutoHint ()
+
+ endif
+endif

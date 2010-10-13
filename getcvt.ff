@@ -1,0 +1,272 @@
+#!/usr/bin/env fontforge
+/* Copyright (C) 2008 Andrey V. Panov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * This script measures some chracteristic lengthes and generates control
+ * values for xgridfit
+ *
+ * Usage: [fontforge -script] getcvt.ff fontfile
+ *
+ */
+
+fontname=$1
+Open(fontname)
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+#tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+cvt = ' <control-value name="'
+val = '" value="'
+end = '"/>'
+
+Select("H")
+bbox = GlyphInfo("BBox")
+X_height = Round(bbox[3])
+Print(cvt + "cap-x-height" + val, X_height, end)
+baseheight = X_height/10
+x_max = GlyphInfo("Xextrema", baseheight)
+H_space = (x_max[1] - x_max[0])
+Print(cvt + "cap-h-space" + val, H_space, end)
+Print(cvt + "cap-h-lbearing" + val, Round(x_max[0] + baseheight * tan_it), end)
+y_max = GlyphInfo("Yextrema", Round((bbox[0] + bbox[2])/2.0))
+Print(cvt + "cap-h-intersect-height" + val, (y_max[0]), end)
+Select("O")
+bbox = GlyphInfo("BBox")
+O_height = Round(bbox[3])
+Print(cvt + "cap-o-height" + val, O_height, end)
+O_base = Round(bbox[1])
+Print(cvt + "cap-o-baseline" + val, O_base, end)
+Print(cvt + "cap-o-space" + val, Round(bbox[2] - bbox[0]), end)
+Print(cvt + "cap-o-lbearing" + val, Round(bbox[0]), end) #- (O_height + O_base) * 0.5 * tan_it
+Select("T")
+x_max = GlyphInfo("Xextrema", baseheight)
+temp = x_max[0]
+V_stem = (x_max[1] - x_max[0])
+Print(cvt + "cap-vert-stem" + val, V_stem, end)
+x_max = GlyphInfo("Xextrema", X_height)
+Print(cvt + "cap-t-lbearing" + val, x_max[0], end) # ??? it
+Print(cvt + "cap-t-horiz-stem" + val, Round(temp - x_max[0] + (baseheight - X_height) * tan_it), end)
+Select("Tse")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round(H_space * 0.9 - V_stem))
+H_stem = (y_max[1] - y_max[0])
+Print(cvt + "cap-horiz-stem" + val, H_stem, end)
+Print(cvt + "cap-tse-desc" + val, bbox[1], end)
+x_max = GlyphInfo("Xextrema", X_height/2)
+if (tan_it == 0)
+ Print(cvt + "cap-tse-desc-horiz-shift" + val, Round(bbox[2] - x_max[1]), end)
+else
+ temp = x_max[1]
+ x_max = GlyphInfo("Xextrema", Round(bbox[1]))
+ Print(cvt + "cap-tse-desc-horiz-shift" + val, Round(x_max[1] - temp + (bbox[1] - X_height/2.0) * tan_it), end) # could be incorrect if descenter has slanted edges
+endif
+x_max = GlyphInfo("Xextrema", Round(bbox[1]/2.0))
+V_thinstem = (x_max[1] - x_max[0])
+Print(cvt + "cap-vert-thinstem" + val, V_thinstem, end)
+Select("C")
+bbox = GlyphInfo("BBox")
+x_max = GlyphInfo("Xextrema", Round(bbox[0]))
+Print(cvt + "cap-o-curve-stem" + val, x_max[0], end)
+Select("Ze")
+bbox = GlyphInfo("BBox")
+Print(cvt + "cap-cyrz-lbearing" + val, Round(bbox[0]), end)
+Select("A")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round((bbox[2] - bbox[0])/2))
+Print(cvt + "cap-a-hstem-height" + val, y_max[0], end)
+Select("M")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "cap-m-space" + val, (x_max[1] - x_max[0]), end)
+Select("N")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "cap-n-space" + val, (x_max[1] - x_max[0]), end)
+Select("U")
+x_max = GlyphInfo("Xextrema", X_height - baseheight)
+Print(cvt + "cap-u-space" + val, (x_max[1] - x_max[0]), end)
+Select("I.cyr")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "cap-cyri-space" + val, (x_max[1] - x_max[0]), end)
+Select("El")
+x_max = GlyphInfo("Xextrema", X_height - baseheight)
+Print(cvt + "cap-cyrl-space" + val, (x_max[1] - x_max[0]), end)
+Select("Che")
+x_max = GlyphInfo("Xextrema", X_height - baseheight)
+Print(cvt + "cap-cyrch-space" + val, (x_max[1] - x_max[0]), end)
+Select("Soft")
+bbox = GlyphInfo("BBox")
+Print(cvt + "cap-b-low-space" + val, Round(bbox[2] - bbox[0]), end)
+Select("Sha")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "cap-sh-inner-space" + val, Round((x_max[1] - x_max[0] - 3*V_stem)*0.5), end)
+
+Select("one")
+x_max = GlyphInfo("Xextrema", X_height/2)
+Print(cvt + "digit-vert-stem" + val, (x_max[1] - x_max[0]), end)
+Select("zero")
+bbox = GlyphInfo("BBox")
+Print(cvt + "digit-over-height" + val, Round(bbox[3]), end)
+Select("five")
+bbox = GlyphInfo("BBox")
+Print(cvt + "digit-height" + val, Round(bbox[3]), end)
+Select("six")
+bbox = GlyphInfo("BBox")
+Print(cvt + "digit-six-hspace" + val, Round(bbox[2] - bbox[0]), end) # non-it
+Select("seven")
+bbox = GlyphInfo("BBox")
+x_max = GlyphInfo("Yextrema", Round(bbox[0]))
+y_max = GlyphInfo("Yextrema", Round(bbox[2]))
+Print(cvt + "digit-mid-horiz-stem" + val, (y_max[1] - x_max[0]), end)
+
+Select("en")
+bbox = GlyphInfo("BBox")
+x_height = Round(bbox[3])
+Print(cvt + "small-x-height" + val, x_height, end)
+baseheight = x_height/10
+x_max = GlyphInfo("Xextrema", baseheight)
+h_space = (x_max[1] - x_max[0])
+Print(cvt + "small-cyrn-space" + val, h_space, end)
+Print(cvt + "small-cyrn-lbearing" + val, Round(x_max[0] + baseheight * tan_it), end)
+y_max = GlyphInfo("Yextrema", Round((bbox[0] + bbox[2])/2.0))
+Print(cvt + "small-cyrn-intersect-height" + val, (y_max[0]), end)
+Select("o")
+bbox = GlyphInfo("BBox")
+o_height = Round(bbox[3])
+Print(cvt + "small-o-height" + val, o_height, end)
+o_base = Round(bbox[1])
+Print(cvt + "small-o-baseline" + val, o_base, end)
+Print(cvt + "small-o-space" + val, Round(bbox[2] - bbox[0]), end)
+Print(cvt + "small-o-lbearing" + val, Round(bbox[0]), end) #- (o_height + o_base) * 0.5 * tan_it
+if (tan_it == 0)
+ Select("te")
+ x_max = GlyphInfo("Xextrema", baseheight)
+ temp = x_max[0]
+ v_stem = (x_max[1] - x_max[0])
+ Print(cvt + "small-vert-stem" + val, v_stem, end)
+ x_max = GlyphInfo("Xextrema", x_height)
+ Print(cvt + "small-cyrt-lbearing" + val, x_max[0], end) # ??? it
+ Print(cvt + "small-cyrt-horiz-stem" + val, Round(temp - x_max[0] + (baseheight - x_height) * tan_it), end) # extra?
+else
+ Select("l")
+ x_max = GlyphInfo("Xextrema", baseheight)
+ v_stem = (x_max[1] - x_max[0])
+ Print(cvt + "small-vert-stem" + val, v_stem, end)
+endif
+Select("tse")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round(h_space * 0.9 - v_stem))
+h_stem = (y_max[1] - y_max[0])
+Print(cvt + "small-horiz-stem" + val, h_stem, end)
+Print(cvt + "small-tse-desc" + val, bbox[1], end)
+x_max = GlyphInfo("Xextrema", x_height/2)
+if (tan_it == 0)
+ Print(cvt + "small-tse-desc-horiz-shift" + val, Round(bbox[2] - x_max[1]), end)
+else
+ temp = x_max[1]
+ x_max = GlyphInfo("Xextrema", Round(bbox[1]))
+ Print(cvt + "small-tse-desc-horiz-shift" + val, Round(x_max[1] - temp + (bbox[1] - x_height/2) * tan_it), end) # could be incorrect if descenter has slanted edges
+endif
+x_max = GlyphInfo("Xextrema", Round(bbox[1]/2.0))
+v_thinstem = (x_max[1] - x_max[0])
+Print(cvt + "small-vert-thinstem" + val, v_thinstem, end)
+Select("c")
+bbox = GlyphInfo("BBox")
+x_max = GlyphInfo("Xextrema", Round(bbox[0]))
+Print(cvt + "small-o-curve-stem" + val, x_max[0], end)
+Select("h")
+bbox = GlyphInfo("BBox")
+h_height = Round(bbox[3])
+Print(cvt + "small-asc-height" + val, h_height, end)
+Select("p")
+bbox = GlyphInfo("BBox")
+p_depth = Round(bbox[1])
+Print(cvt + "small-desc" + val, p_depth, end)
+Print(cvt + "small-p-space" + val, Round(bbox[2] - bbox[0] - p_depth * tan_it), end)
+Select("ze")
+bbox = GlyphInfo("BBox")
+Print(cvt + "small-cyrz-lbearing" + val, Round(bbox[0]), end)
+Select("a")
+bbox = GlyphInfo("BBox")
+x_max = GlyphInfo("Xextrema", x_height/2)
+Print(cvt + "small-a-space" + val,  Round(x_max[1] + x_height/2 * tan_it - bbox[0]), end)
+Select("n")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "small-n-space" + val, (x_max[1] - x_max[0]), end)
+Select("u")
+x_max = GlyphInfo("Xextrema", x_height - baseheight)
+Print(cvt + "small-u-space" + val, (x_max[1] - x_max[0]), end)
+Select("i.cyr")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "small-cyri-space" + val, (x_max[1] - x_max[0]), end)
+Select("el")
+x_max = GlyphInfo("Xextrema", x_height - baseheight)
+Print(cvt + "small-cyrl-space" + val, (x_max[1] - x_max[0]), end) # it may be incorrect
+Select("em")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "small-cyrm-space" + val, (x_max[1] - x_max[0]), end)
+Select("che")
+x_max = GlyphInfo("Xextrema", x_height - baseheight)
+Print(cvt + "small-cyrch-space" + val, (x_max[1] - x_max[0]), end)
+Select("soft")
+bbox = GlyphInfo("BBox")
+Print(cvt + "small-cyrv-low-space" + val, Round(bbox[2] - bbox[0]), end)
+Select("m")
+x_max = GlyphInfo("Xextrema", baseheight)
+Print(cvt + "small-m-inner-space" + val, Round((x_max[1] - x_max[0] - 3*v_stem)*0.5), end)
+
+Select("plus")
+bbox = GlyphInfo("BBox")
+temp = Round(bbox[2] - bbox[0])
+y_max = GlyphInfo("Yextrema", Round(bbox[0]))
+x_max = GlyphInfo("Xextrema", y_max[0])
+y_max = GlyphInfo("Yextrema", Round(bbox[0] + temp/4))
+Print(cvt + "minus-lbearing" + val, Round(bbox[0]), end)
+Print(cvt + "minus-width" + val, (x_max[1] - x_max[0]), end)
+Print(cvt + "minus-thickness" + val, (y_max[1] - y_max[0]), end)
+Select("bar")
+bbox = GlyphInfo("BBox")
+Print(cvt + "bar-height" + val, Round(bbox[3]), end)
+Print(cvt + "bar-depth" + val, Round(bbox[1]), end)
+Select("parenleft")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round(bbox[0]))
+x_max = GlyphInfo("Xextrema", y_max[0])
+Print(cvt + "paren-curve-stem" + val, (x_max[1] - x_max[0]), end)
+Select("period")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round(bbox[0]))
+x_max = GlyphInfo("Xextrema", y_max[0])
+temp = (x_max[1] - x_max[0])
+Print(cvt + "period-lbearing" + val, Round(bbox[0]), end)
+Print(cvt + "period-width" + val, temp, end) # incorrect for italic curve period
+Select("comma")
+bbox = GlyphInfo("BBox")
+Print(cvt + "comma-width" + val, Round(bbox[2] - bbox[0]), end)
+Print(cvt + "comma-width" + val, (x_max[1] - x_max[0]), end) # for square slanted comma
+Print(cvt + "comma-depth" + val, Round(bbox[1]), end)
+x_max = GlyphInfo("Xextrema", temp/2)
+Select("dotaccent")
+bbox = GlyphInfo("BBox")
+y_max = GlyphInfo("Yextrema", Round(bbox[0]))
+x_max = GlyphInfo("Xextrema", y_max[0])
+temp = (x_max[1] - x_max[0])
+Print(cvt + "dot-width" + val, temp, end) # incorrect for italic curve period
+Select("acute")
+bbox = GlyphInfo("BBox")
+Print(cvt + "acute-height" + val, Round(bbox[1]), end)
+if (SelectIf("perthousandzero") > 0)
+ bbox = GlyphInfo("BBox")
+ Print(cvt + "perthousandzero-space" + val, Round(bbox[2] - bbox[0]), end)
+ Print(cvt + "perthousandzero-height" + val, Round(bbox[3] - bbox[1]), end)
+endif

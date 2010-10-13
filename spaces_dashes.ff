@@ -1,0 +1,77 @@
+/*
+ * Copyright (C) 2008-2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making spaces and dashes
+
+#italic_angle=$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Reencode("unicode")
+
+# spaces
+#Select("space")
+#CopyReference()
+#Select("nonbreakingspace")
+#Paste()
+Select("emdash")
+width = GlyphInfo("Width")
+Select("uni2003") # em space
+SelectMore("uni2001") # em quad
+SetWidth(width)
+ Select("uni2002") # en space
+ SelectMore("uni2000") # en quad
+ SetWidth(Round(width/2.0))
+ Select("uni2004") # 1/3 em space
+ SetWidth(Round(width/3.0))
+ Select("uni2005") 
+ SetWidth(Round(width/4.0))
+ Select("uni2006") 
+ SetWidth(Round(width/6.0))
+ Select("uni2009") 
+ SetWidth(Round(width/5.0))
+ # Hair space 
+ # Cambria and Lucida use emdash/18
+ # TNR and Arial - emdash/12
+ # Droid and Dejavu - emdash/10
+ Select("uni200A") 
+ SetWidth(Round(width/18.0))
+ Select("uni200B","uni200D") 
+ SetWidth(0)
+# Select("A")
+# width = -GlyphInfo("Kern","C") # Thinest kerning pair
+# if (width > 0)
+#  Select("uni200A") 
+#  SetWidth(width)
+# endif
+Select("zero")
+width = GlyphInfo("Width")
+Select("uni2007") # figure space
+SetWidth(width)
+Select("endash")
+width1 = GlyphInfo("Width")
+if (width1 == width)
+ dub_glyph.ff("endash","figuredash")
+endif
+dub_glyph.ff("hyphen",0u2010)
+dub_glyph.ff("hyphen",0u2011)
+Select("period")
+width = GlyphInfo("Width")
+Select("uni2008") # punctuation space
+SetWidth(width)
+
+Reencode("unicode")

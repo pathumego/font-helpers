@@ -1,0 +1,108 @@
+/*
+ * Copyright (C) 2005  Alexey Kryukov
+ * Copyright (C) 2005, 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+first_glyph = $1;
+second_glyph = $2;
+final_glyph = $3;
+offset = $4
+
+#Select (second_glyph);
+#second_name = GlyphInfo("Name")
+
+Select (first_glyph);
+first_width = CharInfo ("Width");
+first_name = GlyphInfo("Name")
+#first_rbearing = CharInfo ("RBearing");
+#first_kern = CharInfo ("Kern", second_glyph);
+CopyReference ();
+#  features = GetPosSub("*") #LGC kerning subtable")
+#  size_f = SizeOf(features)
+#  Print(first_name,",",GlyphInfo("Name")," ",size_f,":",features)
+#  i = 0
+#  while (i < size_f)
+#   if (features[i][1] == "Pair" && features[i][2] == second_name)
+#    Print(GlyphInfo("Name"),":",features[i], "Kern=",CharInfo ("Kern", second_glyph))
+#    #first_kern = 
+#   endif
+#   i++
+#  endloop
+
+Select (final_glyph);
+Paste ();
+
+Select (second_glyph);
+second_name = GlyphInfo("Name")
+second_width = CharInfo ("Width");
+second_rbearing = CharInfo ("RBearing");
+second_name = GlyphInfo("Name")
+CopyReference ();
+
+Select (final_glyph);
+final_name = GlyphInfo("Name")
+PasteWithOffset (first_width + first_width*offset/100, 0);
+#PasteWithOffset (first_width - first_rbearing - second_lbearing + first_width*offset/100, 0);
+#SetLBearing (first_lbearing);
+SetRBearing (second_rbearing);
+
+ Select(second_glyph)
+
+ features = GetPosSub("*")
+ size_f = SizeOf(features)
+ #Print(GlyphInfo("Name"),",",size_f)#,features)
+ Select(final_glyph)
+ i = 0
+ while (i < size_f)
+  if (features[i][1] == "Pair")
+   AddPosSub(features[i][0],features[i][2],features[i][3],features[i][4],\
+   features[i][5],features[i][6],features[i][7],features[i][8],features[i][9],\
+   features[i][10])
+  endif
+  i++
+ endloop
+
+ SelectWorthOutputting()
+ foreach
+  kern = GlyphInfo ("Kern", first_name)
+  if (kern != 0)
+   SetKern(final_name,kern)
+   endif
+#  features = GetPosSub("*")
+#  size_f = SizeOf(features)
+#  i = 0
+#  while (i < size_f)
+#   if (features[i][1] == "Pair" && features[i][2] == first_name)
+#    #Print(GlyphInfo("Name"),",",features[i])
+#    AddPosSub(features[i][0],final_name,features[i][3],features[i][4],\
+#    features[i][5],features[i][6],features[i][7],features[i][8],features[i][9],\
+#    features[i][10])
+#   endif
+#   i++
+#  endloop
+ endloop
+
+Select (final_glyph);
+
+#Select (first_glyph);
+#CopyGlyphFeatures ("_krn");
+#Select (final_glyph);
+#PasteInto ();
+
+#Select (second_glyph);
+#CopyGlyphFeatures ("kern");
+#Select (final_glyph);
+#PasteInto ();

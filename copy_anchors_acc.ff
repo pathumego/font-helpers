@@ -1,0 +1,92 @@
+/*
+ * Copyright (C) 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for anchors with vertical shist from base 
+# letter ($1) to accented ones (from 3rd argument)
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+del_mark = $2
+
+/*
+del_mark = 0
+Select(0u301)
+if (WorthOutputting())
+ bbox = GlyphInfo("BBox")
+ height = bbox[3]
+ anchors_ref = GetAnchorPoints()
+ size_ar = SizeOf(anchors_ref)
+ j = 0
+ while (j < size_ar)
+  if (anchors_ref[j][0] == "above-mark" && anchors_ref[j][1] == "basemark")
+   del_mark = Round(height - anchors_ref[j][3])
+   break
+  endif
+  j++
+ endloop
+endif
+*/
+
+Select($1)
+bbox_ref = GlyphInfo("BBox")
+height_ref = bbox_ref[3]
+anchors_ref = GetAnchorPoints()
+size_ar = SizeOf(anchors_ref)
+j = 0
+above_exist = 0
+below_exist = 0
+while (j < size_ar)
+ if (anchors_ref[j][0] == "above")
+  j_ab = j
+  above_exist = 1
+ elseif (anchors_ref[j][0] == "below")
+  j_be = j
+  below_exist = 1
+ endif
+ j++
+endloop
+
+SelectNone()
+j = 3
+while ( j < $argc)
+ if ( WorthOutputting($argv[j]) )
+  SelectMore($argv[j])
+ endif
+j++
+endloop
+
+foreach
+ name = GlyphInfo("Name")
+ bbox = GlyphInfo("BBox")
+ height = bbox[3]
+ dh = Round(height - height_ref)
+ if (above_exist)
+  if (dh > 0)
+   dy = dh - del_mark
+   dx = dy * tan_it
+  else
+   dy = 0
+   dx = 0
+  endif
+  AddAnchorPoint("above", "basechar", Round(anchors_ref[j_ab][2] - dx), Round(anchors_ref[j_ab][3] + dy))
+ endif
+ if(below_exist && (bbox[1] == bbox_ref[1]))
+  AddAnchorPoint("below", "basechar", Round(anchors_ref[j_be][2]), Round(anchors_ref[j_be][3]))
+ endif
+endloop

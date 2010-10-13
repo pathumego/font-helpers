@@ -1,0 +1,79 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for copying kerning info from Latin or Cyrillic 
+# letters to similar ones
+
+cursive = $1
+
+cop_kern_right.ff("Te",-5,"Ge")
+if ( !cursive )
+ cop_kern_right.ff("te",-3,"ge")
+endif
+cop_kern_left.ff("O.cyr","Ef","Fita","uni04E8","uni04EA")
+cop_kern_left.ff("Es","afii10053")
+cop_kern_left.ff("o.cyr","ef","fita","uni04E9","uni04EB","ie","es")
+cop_kern_left.ff("es","afii10101")
+cop_kern_left.ff("Ha","uni04B2")
+cop_kern_left.ff("ha","uni04B3")
+cop_kern_right.ff("o.cyr",0,"be","ef","e.cyr","yu","fita","uni04E9","uni04EB","uni04ED")
+cop_kern_right.ff("O.cyr",0,"Ef","E.cyr","Yu","Fita","uni04E8","uni04EA","uni04EC")
+cop_kern_right.ff("Ve",0,"Ze")
+cop_kern_left.ff("En","Nje","Dzhe","Be","Ge","I.cyr","Ka","Pe","Tse","Sha","Shcha","Yeru","Soft","Yu","Ghe.up","Gehook","Kartdes","Enrtdes","EnGe","Shhacyrillic","Enhook")
+#cop_kern_right.ff("En",0,"Dzhe","I.cyr","El","Pe","Che","Sha","Yeru","Ya")
+cop_kern_right.ff("En",0,"Dzhe","I.cyr","Pe","Che","Sha","Yeru","Ya")
+cop_kern_right.ff("Je",0,"Enhook","uni0512")
+cop_kern_right.ff("Ka",0,"Zhe","Zhebreve","Zhedieresiscyrillic")
+cop_kern_left.ff("Zhe","Zhertdes","Zhebreve","Zhedieresiscyrillic")
+cop_kern_left.ff("zhe","zhertdes")
+cop_kern_left.ff("ze","e.cyr","zecedilla")
+cop_kern_right.ff("Ge",0,"EnGe")
+
+cop_kern_left.ff("I.cyr","I.short","Imacroncyrillic","Idieresiscyrillic")
+cop_kern_right.ff("I.cyr",0,"I.short","Imacroncyrillic","Idieresiscyrillic")
+cop_kern_left.ff("U.cyr","U.short","Umacroncyrillic","Udieresiscyrillic")
+cop_kern_right.ff("U.cyr",0,"U.short","Umacroncyrillic","Udieresiscyrillic")
+
+if ( !cursive )
+ cop_kern_right.ff("ka",0,"zhe")
+ cop_kern_left.ff("en","nje","dzhe","ve","ge","i.cyr","ka","pe","tse","sha","shcha","yeru","soft","yu","ghe.up","gehook","kartdes","enrtdes","enge","enhook")
+ cop_kern_right.ff("ge",0,"enge")
+endif
+
+cop_kern_acc.ff("i.cyr","i.short","imacroncyrillic","idieresiscyrillic")
+cop_kern_acc.ff("u.cyr","u.short","umacroncyrillic","udieresiscyrillic")
+cop_kern_acc.ff("zhe","zhebreve","zhedieresiscyrillic")
+
+cop_kern_mult.ff("A","Amacron","Abreve","Acaron","uni0226","uni0245","Aringbelow")
+#cop_kern_mult.ff("B","Bdotaccent","Bdotbelow","Blinebelow")
+#cop_kern_mult.ff("C","Cacute","Cmacron","Cbreve","Ccaron")
+#cop_kern_acc.ff("a","amacron","abreve","acaron","uni0227")
+#cop_kern_mult.ff("b","bdotaccent","bdotbelow","blinebelow")
+
+#cop_kern.ff("a","aringbelow")
+
+
+# font specific kerns
+cop_kern_left.ff("d","dcaron","drthook")
+cop_kern_left.ff("l","lcaron","lezh")
+cop_kern_left.ff("t","tcaron","trthook","ts","tesh")
+cop_kern_left.ff("n","eng")
+cop_kern_left.ff("h","hhook","henghook")
+cop_kern_right.ff("j",0,"eng")
+cop_kern_left.ff("z","zrthook","zcurl")
+cop_kern_left.ff("c","ccurl","Gsmallcap")
+

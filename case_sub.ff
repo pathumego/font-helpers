@@ -1,0 +1,33 @@
+/*
+ * Copyright (C) 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+AddLookup("Case substitutions", "gsub_single", 0, [["case",[["cyrl",["dflt"]],["grek",["dflt"]],["latn",["dflt"]]]]])
+AddLookupSubtable("Case substitutions", "Case substitutions subtable")
+Select(0u300,0u331)
+foreach
+ if ( WorthOutputting() )
+  glyph_name = GlyphInfo("Name")
+  glyph_name_cap = "uni" + Strsub(ToString(UCodePoint(UnicodeFromName(glyph_name))), 2) + ".cap"
+  # glyph_name_cap = glyph_name + ".cap"
+  if (InFont(glyph_name_cap))
+   if (DrawsSomething(glyph_name_cap))
+    AddPosSub("Case substitutions subtable", glyph_name_cap) 
+   endif
+  endif
+ endif
+endloop 
+

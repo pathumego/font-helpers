@@ -1,0 +1,82 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for copying kerning info from Latin letters to 
+# similar Cyrillic ones
+
+cursive = $1;
+
+if (cursive)
+ latin_gl=["A","B","E","H","I","M","O","P","T","X","C","a","e","u","o","p","c","n","m","x","s","S","j","J","Idieresis","Edieresis","edieresis","i","y","Ccedilla","ccedilla","Y","h","I","Abreve","abreve","Adieresis","adieresis","AE","ae","Ebreve","ebreve","Odieresis","odieresis"]
+ cyr_gl=["uni0410","uni0412","uni0415","uni041d","uni0406","uni041c","uni041e","uni0420","uni0422","uni0425","uni0421","uni0430","uni0435","uni0438","uni043e","uni0440","uni0441","uni043f","uni0442","uni0445","uni0455","uni0405","uni0458","uni0408","uni0407","uni0401","uni0451","uni0456","uni0443","uni04AA","uni04AB","uni04AE","uni04BB","uni04C0","uni04D0","uni04D1","uni04D2","uni04D3","uni04D4","uni04D5","uni04D6","uni04D7","uni04E6","uni04E7"]
+else
+ latin_gl=["A","B","E","H","I","M","O","P","T","X","C","a","e","o","p","c","x","s","S","j","J","Idieresis","Edieresis","edieresis","i","y","Ccedilla","ccedilla","Y","h","I","Abreve","abreve","Adieresis","adieresis","AE","ae","Ebreve","ebreve","Odieresis","odieresis","l"]
+ cyr_gl=["uni0410","uni0412","uni0415","uni041d","uni0406","uni041c","uni041e","uni0420","uni0422","uni0425","uni0421","uni0430","uni0435","uni043e","uni0440","uni0441","uni0445","uni0455","uni0405","uni0458","uni0408","uni0407","uni0401","uni0451","uni0456","uni0443","uni04AA","uni04AB","uni04AE","uni04BB","uni04C0","uni04D0","uni04D1","uni04D2","uni04D3","uni04D4","uni04D5","uni04D6","uni04D7","uni04E6","uni04E7","uni04CF"]
+endif
+
+common_gl=["space","exclam","quotesingle","parenleft","parenright","comma",\
+           "hyphen","period","colon","semicolon","question","bracketleft",\
+           "bracketright","braceleft","braceright","guillemotleft",\
+           "guillemotright","endash","emdash","quotedblleft","quotedblright",\
+           "quotedblbase","ellipsis"]
+
+size_sc = SizeOf(latin_gl)
+latin_gl = latin_gl + common_gl
+cyr_gl = cyr_gl + common_gl
+size_ar = SizeOf(latin_gl)
+
+i = 0
+while (i < size_ar)
+ if ( WorthOutputting(latin_gl[i]) && WorthOutputting(cyr_gl[i]))
+  j = 0
+  while (j < size_ar)
+   if ((i != j) && !(i > size_sc && j > size_sc) && WorthOutputting(latin_gl[j]) && WorthOutputting(cyr_gl[j]))
+    Select(latin_gl[i])
+    kern = GlyphInfo("Kern", latin_gl[j])
+    if (kern != 0)
+     Select(cyr_gl[i])
+     kern_2 = GlyphInfo("Kern", cyr_gl[j])
+     if (kern_2 == 0)
+      SetKern(cyr_gl[j],kern)
+     endif
+    endif
+   endif
+   j++
+  endloop
+ endif
+ i++
+endloop
+
+if (!cursive)
+ i = 0
+ while (i < size_ar)
+  if ( WorthOutputting(latin_gl[i]) && WorthOutputting(cyr_gl[i]))
+   if ( WorthOutputting("n") && WorthOutputting("en"))
+    Select(latin_gl[i])
+    kern = GlyphInfo("Kern", "n")
+    if (kern != 0)
+     Select(cyr_gl[i])
+     kern_2 = GlyphInfo("Kern", "en")
+     if (kern_2 == 0)
+      SetKern("en",kern)
+     endif
+    endif
+   endif
+  endif
+  i++
+ endloop
+endif

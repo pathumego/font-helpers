@@ -1,0 +1,32 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for copying kerning info from small cap letters to
+# similar ones
+
+cop_kern_left.ff("afii10032.sc","afii10032.sc","uni04E8.sc","uni04EA.sc")
+cop_kern_left.ff("afii10035.sc","afii10053.sc")
+cop_kern_left.ff("afii10039.sc","uni04B2.sc")
+cop_kern_right.ff("afii10032.sc",0,"afii10047.sc","afii10048.sc","afii10032.sc","uni04E8.sc","uni04EA","uni04EC.sc")
+cop_kern_right.ff("afii10019.sc",0,"afii10019.sc")
+cop_kern_right.ff("afii10028.sc",0,"afii10024.sc","uni04C1.sc","uni04C1.sc")
+cop_kern_left.ff("afii10024.sc","uni0496.sc","uni04C1.sc","uni04C1.sc")
+
+cop_kern_left.ff("afii10026.sc","afii10027.sc","uni04E2.sc","uni04E4.sc")
+cop_kern_right.ff("afii10026.sc",0,"afii10027.sc","uni04E2.sc","uni04E4.sc")
+cop_kern_left.ff("afii10037.sc","afii10062.sc","uni04EE.sc","uni04F0.sc")
+cop_kern_right.ff("afii10037.sc",0,"afii10062.sc","uni04EE.sc","uni04F0.sc")

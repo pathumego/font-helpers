@@ -1,0 +1,237 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making accented glyphs using anchors, 
+# copying kerning info and anchors with vertical shist from base letters to
+# accented ones
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+del_mark = 0
+Select(0u301)
+if (WorthOutputting())
+ bbox = GlyphInfo("BBox")
+ height = bbox[3]
+ anchors_ref = GetAnchorPoints()
+ size_ar = SizeOf(anchors_ref)
+ j = 0
+ while (j < size_ar)
+  if (anchors_ref[j][0] == "above-mark" && anchors_ref[j][1] == "basemark")
+   del_mark = Round(height - anchors_ref[j][3])
+   break
+  endif
+  j++
+ endloop
+endif
+
+copy_anchors_acc.ff("A",del_mark,"Agrave","Aacute","Acircumflex","Atilde","Adieresis","Abreve","Adotbelow")
+copy_anchors_acc.ff("E",del_mark,"Egrave","Eacute","Ecircumflex","Etilde","Edieresis","Ebreve","Edotbelow","Ecaron")
+copy_anchors_acc.ff("I",del_mark,"Igrave","Iacute","Icircumflex","Idieresis","Idotbelow")
+copy_anchors_acc.ff("O",del_mark,"Ograve","Oacute","Ocircumflex","Otilde","Odieresis","Obreve","Odotbelow","Ohungarumlaut")
+copy_anchors_acc.ff("U",del_mark,"Ugrave","Uacute","Ucircumflex","Utilde","Udieresis","Ubreve","Udotbelow","Uhungarumlaut")
+copy_anchors_acc.ff("Y",del_mark,"Ygrave","Yacute","Ycircumflex","Ytilde","Ydieresis","Ybreve")
+copy_anchors_acc.ff("C",del_mark,"Cgrave","Cacute","Ccaron")
+copy_anchors_acc.ff("D",del_mark,"Dcaron")
+copy_anchors_acc.ff("R",del_mark,"Rgrave","Racute","Rcaron")
+copy_anchors_acc.ff("S",del_mark,"Sgrave","Sacute","Scaron")
+copy_anchors_acc.ff("T",del_mark,"Tcaron")
+copy_anchors_acc.ff("Z",del_mark,"Zgrave","Zacute","Zcaron","Zdotaccent")
+copy_anchors_acc.ff("a",del_mark,"agrave","aacute","acircumflex","atilde","adieresis","abreve","adotbelow")
+copy_anchors_acc.ff("e",del_mark,"egrave","eacute","ecircumflex","etilde","edieresis","ebreve","edotbelow","ecaron")
+copy_anchors_acc.ff("dotlessi",del_mark,"igrave","iacute","icircumflex","idotbelow")
+copy_anchors_acc.ff("o",del_mark,"ograve","oacute","ocircumflex","otilde","odieresis","obreve","odotbelow","ohungarumlaut")
+copy_anchors_acc.ff("u",del_mark,"ugrave","uacute","ucircumflex","utilde","udieresis","ubreve","udotbelow","uhungarumlaut")
+copy_anchors_acc.ff("y",del_mark,"ygrave","yacute","ycircumflex","ytilde","ydieresis","ybreve")
+copy_anchors_acc.ff("c",del_mark,"cgrave","cacute","ccaron")
+copy_anchors_acc.ff("r",del_mark,"rgrave","racute","rcaron")
+copy_anchors_acc.ff("s",del_mark,"sgrave","sacute","scaron")
+copy_anchors_acc.ff("z",del_mark,"zgrave","zacute","zcaron","zdotaccent")
+
+SetPref("PreferSpacingAccents",0)
+
+Select("Agrave","Aring")
+SelectMore("Egrave","Idieresis")
+SelectMore("Ntilde","Odieresis")
+SelectMore("Ugrave","Yacute")
+SelectMore("agrave","aring")
+SelectMore("egrave","idieresis")
+SelectMore("ntilde","odieresis")
+SelectMore("ugrave","yacute")
+SelectMore("ydieresis","abreve")
+SelectMore("Cacute","Dcaron")
+SelectMore("Emacron","edotaccent")
+SelectMore("Ecaron","gdotaccent")
+SelectMore("Hcircumflex","hcircumflex")
+SelectMore("Itilde","ibreve")
+SelectMore("Idotaccent")
+SelectMore("Jcircumflex","jcircumflex")
+SelectMore("Lacute","lacute")
+SelectMore("Nacute","nacute")
+SelectMore("Ncaron","ncaron")
+SelectMore("Omacron","ohungarumlaut")
+SelectMore("Racute","racute")
+SelectMore("Rcaron","scircumflex")
+SelectMore("Scaron","scaron")
+SelectMore("Tcaron")
+SelectMore("Utilde","uhungarumlaut")
+SelectMore("Wcircumflex","zcaron")
+SelectMore("Acaron","ucaron")
+SelectMore("AEmacron","aemacron")
+SelectMore("Gcaron","kcaron")
+SelectMore("Oogonekmacron","jcaron")
+SelectMore("Gacute","gacute")
+SelectMore(0u1F8,0u1F9) # ngrave
+SelectMore("AEacute","uinvertedbreve")
+SelectMore(0u21E,0u21F) # hcaron
+SelectMore(0u226,0u227) # a_dotaccent
+SelectMore(0u22E,0u22F) #o_dotaccent
+SelectMore(0u232,0u233) #ymacron
+SelectMoreSingletons(0u403,0u40C,0u453,0u45C)
+SelectMore(0u4C1,0u4C2)
+SelectMore(0u4D6,0u4D7)
+SelectMore(0u4DA,0u4DF)
+SelectMore(0u4E2,0u4E5)
+SelectMore(0u4EA,0u4F5)
+SelectMore(0u4F8,0u4F9)
+SelectMore("Bdotaccent","bdotaccent")
+SelectMore(0u1E08,0u1E0B)
+SelectMore(0u1E1C,0u1E23)
+SelectMore("Hdieresis","hdieresis")
+SelectMore("Kacute","kacute")
+SelectMore("Macute","mdotaccent")
+SelectMore("Ndotaccent","ndotaccent")
+SelectMore("Pacute","rdotaccent")
+SelectMore("Sdotaccent","sdotaccent")
+SelectMore("Tdotaccent","tdotaccent")
+SelectMore("Vtilde","vtilde")
+SelectMore("Wgrave","wdotaccent")
+SelectMore("Xdotaccent","zcircumflex")
+SelectMore("tdieresis","yring")
+SelectMore(0u1E9B)
+SelectMore("Ygrave","ygrave")
+SelectMore("Etilde","etilde")
+SelectMore("Ytilde","ytilde")
+
+# below diacritics
+SelectMore(0u1E00,0u1E01)
+SelectMore(0u1E04,0u1E07)
+SelectMore(0u1E0C,0u1E13)
+SelectMore(0u1E18,0u1E1C)
+SelectMore(0u1E24,0u1E25)
+SelectMore(0u1E2A,0u1E2D)
+SelectMore(0u1E32,0u1E37)
+SelectMore(0u1E3A,0u1E3D)
+SelectMore(0u1E42,0u1E43)
+SelectMore(0u1E46,0u1E4B)
+SelectMore(0u1E5A,0u1E5B)
+SelectMore(0u1E5E,0u1E5F)
+SelectMore(0u1E62,0u1E63)
+SelectMore(0u1E68,0u1E69) # DOUBLE
+SelectMore(0u1E6C,0u1E77)
+SelectMore(0u1E7E,0u1E7F)
+SelectMore(0u1E88,0u1E89) 
+SelectMore(0u1E92,0u1E96)
+SelectMore("Adotbelow","adotbelow")
+SelectMore("Edotbelow","edotbelow")
+SelectMore("Idotbelow","odotbelow")
+SelectMore("Ohorndotbelow","udotbelow")
+SelectMore("Uhorndotbelow","uhorndotbelow")
+
+foreach
+ if (! WorthOutputting())
+  BuildAccented()
+  refs = GlyphInfo("RefNames")
+  name = GlyphInfo("Name")
+  bbox = GlyphInfo("BBox")
+  height = bbox[3]
+  size_refs = SizeOf(refs)
+  i = 0
+  while (i < size_refs)
+   ref_u = UnicodeFromName(refs[i])
+   if (IsAlpha(ref_u))
+    if (IsUpper(ref_u))
+     cop_kern.ff(refs[i],name)
+    elseif (IsLower(ref_u))
+     cop_kern_acc.ff(refs[i],name)
+    endif
+    Select(refs[i])
+    bbox_ref = GlyphInfo("BBox")
+    height_ref = bbox_ref[3]
+    anchors_ref = GetAnchorPoints()
+    size_ar = SizeOf(anchors_ref)
+    dh = Round(height - height_ref)
+    j = 0
+    above_exist = 0
+    below_exist = 0
+    while (j < size_ar)
+     if (anchors_ref[j][0] == "above")
+      j_ab = j
+      above_exist = 1
+     elseif (anchors_ref[j][0] == "below")
+      j_be = j
+      below_exist = 1
+     endif
+     j++
+    endloop
+    if (above_exist)
+     if (dh > 0)
+      dy = dh - del_mark
+      dx = dy * tan_it
+     else
+      dy = 0
+      dx = 0
+     endif
+     Select(name)
+     AddAnchorPoint("above", "basechar", Round(anchors_ref[j_ab][2] - dx), Round(anchors_ref[j_ab][3] + dy))
+    endif
+    if(below_exist && (bbox[1] == bbox_ref[1]))
+     Select(name)
+     AddAnchorPoint("below", "basechar", Round(anchors_ref[j_be][2]), Round(anchors_ref[j_be][3]))
+    endif
+    Select(name)
+   endif
+   i++
+  endloop
+ endif
+endloop
+
+SelectMore(0u1E14,0u1E17) # double diacritics
+SelectMore(0u1E38,0u1E39)
+SelectMore(0u1E4C,0u1E53) # double diacritics
+SelectMore(0u1E5A,0u1E5F)
+foreach
+ if (! WorthOutputting())
+  BuildAccented()
+  refs = GlyphInfo("RefNames")
+  name = GlyphInfo("Name")
+  size_refs = SizeOf(refs)
+  i = 0
+  while (i < size_refs)
+   ref_u = UnicodeFromName(refs[i])
+   if (IsAlpha(ref_u))
+    if (IsUpper(ref_u))
+     cop_kern.ff(refs[i],name)
+    elseif (IsLower(ref_u))
+     cop_kern_acc.ff(refs[i],name)
+    endif
+   endif
+   i++
+  endloop
+ endif
+endloop

@@ -1,0 +1,37 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+Reencode("unicode")
+
+dub_glyph_ch.ff("Ccedilla",0u4AA)
+dub_glyph_ch.ff("ccedilla",0u4AB)
+dub_glyph_ch.ff("Y",0u4AE)
+dub_glyph_ch.ff("h",0u4BB)
+dub_glyph_ch.ff("I",0u4C0)
+dub_glyph_ch.ff("l",0u4CF)
+dub_glyph_ch.ff("Abreve",0u4D0)
+dub_glyph_ch.ff("abreve",0u4D1)
+dub_glyph_ch.ff("Adieresis",0u4D2)
+dub_glyph_ch.ff("adieresis",0u4D3)
+dub_glyph_ch.ff("AE",0u4D4)
+dub_glyph_ch.ff("ae",0u4D5)
+dub_glyph_ch.ff("Ebreve",0u4D6)
+dub_glyph_ch.ff("ebreve",0u4D7)
+dub_glyph_ch.ff("Schwa",0u4D8)
+dub_glyph_ch.ff("schwa",0u4D9)
+dub_glyph_ch.ff("Odieresis",0u4E6)
+dub_glyph_ch.ff("odieresis",0u4E7)

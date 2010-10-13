@@ -1,0 +1,141 @@
+/*
+ * Copyright (C) 2008 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making IPA extension symbols from
+# existing Latin and Cyrillic ones
+
+if ($argc > 1)
+ h_offset = $1 # shift of rotated glyph
+else
+ h_offset = 0
+endif
+if ($argc > 2)
+ mode = $2 
+else
+ mode = 0
+endif
+
+# Print(mode)
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+#tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Select("x")
+bbox = GlyphInfo("BBox")
+x_height_2 = Round((bbox[3] + bbox[1])*0.5)
+x_height = Round(bbox[3])
+
+Select("f")
+bbox = GlyphInfo("BBox")
+f_height = bbox[3]
+
+Select("o")
+bbox = GlyphInfo("BBox")
+asc_height_2 = Round((bbox[1]+f_height)*0.5)
+
+Select("X")
+bbox = GlyphInfo("BBox")
+X_height_2 = Round(bbox[3]*0.5)
+
+if ( mode == 0 )
+
+ make_dup_rot.ff("a","uni0250",tan_it,x_height_2)
+ make_dup_rot.ff("uni0251","uni0252",tan_it,x_height_2)
+ make_dup_rot.ff("v","uni028C",tan_it,x_height_2)
+ make_dup_rot.ff("m","uni026F",tan_it,x_height_2,h_offset)
+ make_dup_rot.ff("w","uni028D",tan_it,x_height_2)
+ make_dup_rot.ff("y","uni028E",tan_it,x_height_2)
+ make_dup_rot.ff("uni027C","uni027A",tan_it,x_height_2)
+ make_dup_rot.ff("k","uni029E",tan_it,x_height_2,h_offset)
+ dub_glyph.ff(0u0432,"uni0299")
+ dub_glyph.ff(0u043d,"uni029C")
+ dub_glyph.ff(0u0475,"uni2C71")
+ 
+ hflip_glyph.ff("S","uni01A7",italic_angle,X_height_2)
+ hflip_glyph.ff("s","uni01A8",italic_angle,x_height_2)
+ hflip_glyph.ff("E","uni018E",italic_angle,X_height_2)
+ hflip_glyph.ff("e","uni0258",italic_angle,x_height_2)
+ hflip_glyph.ff("uni029A","uni025D",italic_angle,x_height_2)
+
+else
+
+ dub_glyph.ff(0u0448,"uni026F")
+
+endif
+
+make_dup_rot.ff("C","uni0186",tan_it,X_height_2,h_offset)
+make_dup_rot.ff("V","uni0245",tan_it,X_height_2)
+make_dup_rot.ff("c","uni0254",tan_it,x_height_2,h_offset)
+make_dup_rot.ff("e","uni0259",tan_it,x_height_2,h_offset)
+make_dup_rot.ff("h","uni0265",tan_it,x_height_2,h_offset)
+make_dup_rot.ff("r","uni0279",tan_it,x_height_2,h_offset)
+make_dup_rot.ff("t","uni0287",tan_it,x_height_2,h_offset)
+hflip_glyph.ff("uni025B","uni025C",italic_angle,x_height_2)
+hflip_glyph.ff("uni027E","uni027F",italic_angle,x_height_2)
+make_dup_rot.ff("uni0280","uni0281",tan_it,x_height_2)
+hflip_glyph.ff("uni0294","uni0295",tan_it,x_height_2)
+make_dup_rot.ff("uni0294","uni0296",tan_it,asc_height_2)
+dub_glyph.ff("uni04E9","uni0275")
+hflip_glyph.ff("uni02A1","uni02A2",tan_it,x_height_2)
+
+# Build modifiers
+if ( mode == 0 )
+ modifier_height = Round(x_height*2.0/3.0)
+ make_superscript.ff("h","uni02B0",modifier_height,tan_it)
+ make_superscript.ff("uni0266","uni02B1",modifier_height,tan_it)
+ make_superscript.ff("j","uni02B2",modifier_height,tan_it)
+ make_superscript.ff("r","uni02B3",modifier_height,tan_it)
+ make_superscript.ff("uni0279","uni02B4",modifier_height,tan_it)
+ make_superscript.ff("uni027B","uni02B5",modifier_height,tan_it)
+ make_superscript.ff("uni0281","uni02B6",modifier_height,tan_it)
+ make_superscript.ff("w","uni02B7",modifier_height,tan_it)
+ make_superscript.ff("y","uni02B8",modifier_height,tan_it)
+ make_superscript.ff("uni0263","uni02E0",modifier_height,tan_it)
+ make_superscript.ff("l","uni02E1",modifier_height,tan_it)
+ make_superscript.ff("s","uni02E2",modifier_height,tan_it)
+ make_superscript.ff("x","uni02E3",modifier_height,tan_it)
+ make_superscript.ff("uni0295","uni02E4",modifier_height,tan_it)
+ make_superscript.ff("a","uni1D43",modifier_height,tan_it)
+ make_superscript.ff("uni0250","uni1D44",modifier_height,tan_it)
+ make_superscript.ff("uni0251","uni1D45",modifier_height,tan_it)
+ make_superscript.ff("ae","uni1D46",modifier_height,tan_it)
+ make_superscript.ff("b","uni1D47",modifier_height,tan_it)
+ make_superscript.ff("d","uni1D48",modifier_height,tan_it)
+ make_superscript.ff("e","uni1D49",modifier_height,tan_it)
+ make_superscript.ff("uni0259","uni1D4A",modifier_height,tan_it)
+ make_superscript.ff("uni025B","uni1D4B",modifier_height,tan_it)
+ make_superscript.ff("g","uni1D4D",modifier_height,tan_it)
+ make_superscript.ff("k","uni1D4F",modifier_height,tan_it)
+ make_superscript.ff("m","uni1D50",modifier_height,tan_it)
+ make_superscript.ff("eng","uni1D51",modifier_height,tan_it)
+ make_superscript.ff("o","uni1D52",modifier_height,tan_it)
+ make_superscript.ff("uni0254","uni1D53",modifier_height,tan_it)
+ make_superscript.ff("p","uni1D56",modifier_height,tan_it)
+ make_superscript.ff("t","uni1D57",modifier_height,tan_it)
+ make_superscript.ff("u","uni1D58",modifier_height,tan_it)
+ make_superscript.ff("uni026F","uni1D5A",modifier_height,tan_it)
+ make_superscript.ff("v","uni1D5B",modifier_height,tan_it)
+ make_superscript.ff("beta","uni1D5D",modifier_height,tan_it)
+ make_superscript.ff("gamma","uni1D5E",modifier_height,tan_it)
+ make_superscript.ff("phi","uni1D60",modifier_height,tan_it)
+ make_superscript.ff("chi","uni1D61",modifier_height,tan_it)
+ make_superscript.ff("en","uni1D78",modifier_height,tan_it)
+ hflip_glyph.ff("uni02C0","uni02C1",italic_angle)
+ make_superscript.ff("n","uni207F",modifier_height,tan_it)
+endif

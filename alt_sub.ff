@@ -1,0 +1,45 @@
+/*
+ * Copyright (C) 2009 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making tnum substitutions to glyphs with ".tab" suffix
+
+AddLookup("Stylistic set 01", "gsub_single", 0, [["ss01",[["cyrl",["dflt"]],["grek",["dflt"]],["latn",["dflt"]]]]])
+AddLookupSubtable("Stylistic set 01", "Stylistic set 01 subtable")
+#Select(0u300,0u331)
+ SelectWorthOutputting() 
+ selection=$selection
+ j=SizeOf(selection)
+ SelectNone()
+ i=0
+ #foreach
+ while(i<j)
+  if ( selection[i] && SelectIf(i) == 1)
+   name = GlyphInfo ("Name")
+   cap_end=Strstr(name, ".alt")
+   if (cap_end > 0)
+    cap_name=Strsub(name, 0, cap_end)
+    if (Strlen(name) == (Strlen(cap_name) + 4))
+     low = UCodePoint(UnicodeFromName(cap_name))
+     Select(low)
+     AddPosSub("Stylistic set 01 subtable", name);
+    endif
+   endif
+  endif
+ i++ 
+ endloop
+ SelectNone()
+

@@ -1,0 +1,1152 @@
+/*
+ * Copyright (C) 2006, 2008, 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for addition of anchors to a font
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+#tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+affricate_above = WorthOutputting(0u361)
+
+if (CheckForAnchorClass("above") == 0)
+ AddLookup("Anchor marks", "gpos_mark2base", 0, [["mark",[["cyrl",["dflt"]],["latn",["dflt"]]]]])
+ AddLookupSubtable("Anchor marks", "Anchor marks subtable")
+ AddAnchorClass("above", "default", "Anchor marks subtable")
+ AddAnchorClass("below", "default", "Anchor marks subtable")
+ if (affricate_above) # combining 
+  AddAnchorClass("affricate-above", "default", "Anchor marks subtable")
+  AddAnchorClass("affricate-below", "default", "Anchor marks subtable")
+ endif
+ if (WorthOutputting(0u328)) # combining ogonek
+  AddAnchorClass("ogonek", "default", "Anchor marks subtable")
+ endif
+endif
+if (CheckForAnchorClass("above-mark") == 0)
+ AddLookup("Anchor mark to marks", "gpos_mark2mark", 0, [["mkmk",[["cyrl",["dflt"]],["latn",["dflt"]]]]])
+ AddLookupSubtable("Anchor mark to marks", "Anchor mark to marks subtable")
+ AddAnchorClass("above-mark", "mk-mk", "Anchor mark to marks subtable")
+endif
+
+Reencode("unicode")
+
+if (italic_angle != 0)
+ cursive = 1
+
+ char_number = CharCnt()
+ SetCharCnt(char_number + 1)
+
+ Select(char_number)
+ SetCharName("temporary_glyph",0)
+else
+ cursive = 0
+endif
+
+Select("space")
+space=GlyphInfo("Width")
+
+acute_shift = -space/20
+acutecap_shift = -space/18
+dblacute_shift = -space/25
+dblacutecap_shift = -space/20
+#if ($argc = 4)
+# acute_shift = $1
+# cutecap_shift = $2
+#else
+# acute_shift = space/20
+# cutecap_shift = space/20
+#endif
+
+Select("h")
+bbox = GlyphInfo("BBox")
+h_height = Round(bbox[3])
+
+Select("t")
+bbox = GlyphInfo("BBox")
+t_height = Round(bbox[3])
+
+Select("x")
+bbox = GlyphInfo("BBox")
+x_height = Round(bbox[3])
+
+Select("o")
+bbox = GlyphInfo("BBox")
+o_height = Round(bbox[3])
+o_depth = Round(bbox[1])
+
+Select("O")
+bbox = GlyphInfo("BBox")
+O_height = Round(bbox[3])
+O_depth = Round(bbox[1])
+
+Select("X")
+bbox = GlyphInfo("BBox")
+X_height = Round(bbox[3])
+
+Select("p")
+bbox = GlyphInfo("BBox")
+p_depth = Round(bbox[1])
+
+Select("l")
+x_max = GlyphInfo("Xextrema", h_height/2)
+stem_width = (x_max[1] - x_max[0])
+
+SelectSingletons("a","c","e","o","ccedilla","aogonek","eogonek",\
+0u1DD,0u254,0u259,0u25B)
+SelectMoreSingletons("omicron","rho",\
+0u430,0u435,0u437,0u43B,0u43E,0u441,0u44D,0u454,0u4D9,0u4E9)
+SelectMoreSingletons(0u255,0u258,0u25C,0u25D,0u25E,0u275,0u277,0u28C,\
+0u290,0u291,0u29A)
+#if (font_var != "ci")
+ SelectMore("epsilon")
+#endif
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, o_height, tan_it)
+endloop
+
+SelectSingletons("g","m","n","p","q","u","w","y",\
+"dotlessi","eng",0u237,"alpha","eta","iota","omega")
+SelectMoreSingletons(0u436,0u438,0u43C,0u43D,0u43F,\
+0u440,0u442,0u443,0u445,0u446,0u448,0u449,0u44B,0u44E,0u4CA)
+SelectMoreSingletons(0u251,0u252,0u25F,0u261,0u265,0u269,0u26A,0u26F,0u270,0u271,\
+0u272,0u273,0u274,0u285,0u289,0u28B,0u28D,0u29C,0u2AE,0u2AF)
+if ( !cursive )
+ SelectMore(0u434)
+endif
+foreach
+ add_anchor_y.ff("above", "basechar", x_height/2, o_height, tan_it)
+endloop
+
+SelectSingletons(0u294,0u295,0u297,0u2A1,0u2A2)
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, h_height, tan_it)
+endloop
+
+SelectSingletons("r","v","ae","oe",0u27C,0u27D,0u4D5)
+foreach
+ add_anchor_y.ff("above", "basechar", x_height-2, o_height, tan_it)
+endloop
+
+if (WorthOutputting("izhitsa"))
+ Select("v")
+ CopyAnchors()
+ Select("izhitsa")
+ PasteInto()
+endif
+
+SelectSingletons("b","d","h","l","lslash",0u253,0u256,0u266,0u267,0u26B,\
+0u26C,0u26D,0u278,0u286,0u444)
+foreach
+ add_anchor_y.ff("above", "basechar", x_height/2, h_height, tan_it)
+endloop
+
+SelectSingletons("t",0u288)
+foreach
+ add_anchor_y.ff("above", "basechar", x_height/2, t_height, tan_it)
+endloop
+
+SelectSingletons("s",0u25A,0u262,0u282,0u455)
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, o_height, tan_it, 0, 0)
+endloop
+
+SelectSingletons("A","O","Q","Aogonek",0u186,0u18F,0u190,0u410,0u41E,\
+0u42D,0u4D8,0u4E8,0u298)
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it)
+endloop
+
+SelectSingletons("C","G","S","Ccedilla",0u404,0u405,0u421)
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it, 0, 0)
+endloop
+
+SelectSingletons(0u417)
+foreach
+ add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it, 1, 0)
+endloop
+
+SelectSingletons("H","I","J","M","N","T","U","V","W","Y","Iota","Upsilon")
+SelectMoreSingletons(0u406,0u414,0u416,0u418,0u41B,0u41C,0u41D,0u41F,0u422,0u424,0u425,0u426,0u428,\
+0u429,0u42B,0u42E,0u4AE,0u4B0,0u4C9)
+foreach
+ add_anchor_y.ff("above", "basechar", X_height/2, O_height, tan_it)
+endloop
+
+if (WorthOutputting("Izhitsa"))
+ Select("V")
+ CopyAnchors()
+ Select("Izhitsa")
+ PasteInto()
+endif
+
+SelectSingletons("k",0u431)
+SelectMoreSingletons(0u257,0u260,0u26E,0u27A,0u283,0u284,0u28E,0u296,0u29B,0u2A0)
+if (cursive)
+ SelectMore(0u434)
+endif
+foreach
+ add_anchor_med.ff("above", "basechar", h_height, italic_angle)
+endloop
+
+SelectSingletons("x","z",0u292,"upsilon",0u433,0u43A,0u447,0u44A,0u44C,0u4AF,0u4B1)
+SelectMoreSingletons(0u250,0u263,0u264,0u276,0u279,0u27B,0u27E,0u27F,\
+0u280,0u281,0u287,0u28A,0u28F,0u299,0u29E,0u29F)
+if ( cursive )
+ SelectMore(0u44F)
+endif
+#if (font_var == "ci")
+# SelectMore("epsilon")
+#endif
+foreach
+ add_anchor_med.ff("above", "basechar", o_height, italic_angle)
+endloop
+
+SelectSingletons("E","F","K","L","X","Z",0u1B7,0u411,0u413,0u415,0u41A,\
+0u423,0u427,0u42A,0u42C) # ,"AE",0u4D4
+foreach
+ add_anchor_med.ff("above", "basechar", O_height, italic_angle)
+endloop
+
+Select("E")
+bbox = GlyphInfo("BBox")
+y_prof = GlyphInfo("YProfile",Round((bbox[0] + bbox[2])*0.5))
+height = Round(y_prof[1]) + 1
+SelectSingletons("AE",0u4D4,"OE")
+foreach
+ if ( WorthOutputting() )
+  x_prof = GlyphInfo("XProfile",height)
+  AddAnchorPoint("above", "basechar", \
+  Round((x_prof[2] + x_prof[3])*0.5 - O_height*tan_it*0.75), O_height)
+ endif
+endloop
+
+SelectSingletons("B","D","P",0u412,0u420)
+foreach
+ add_anchor_med.ff("above", "basechar", O_height, italic_angle, -space/15)
+endloop
+
+SelectSingletons(0u42F)
+foreach
+ add_anchor_med.ff("above", "basechar", O_height, italic_angle, space/8)
+endloop
+
+SelectSingletons(0u462) # Yat
+add_anchor_y.ff("above", "basechar", X_height, O_height, tan_it)
+
+SelectSingletons(0u463) # yat
+bbox = GlyphInfo("BBox")
+ymax = GlyphInfo("Yextrema", Floor(bbox[2]))
+if (cursive)
+ add_anchor_y.ff("above", "basechar", ymax[0], o_height, tan_it)
+else
+ add_anchor_y.ff("above", "basechar", ymax[0], (o_height + 2*h_height)/3, tan_it)
+endif
+
+
+
+
+# "below" mark
+
+SelectSingletons("H","I","M","N","T","W","Y")
+foreach
+ add_anchor_y.ff("below", "basechar", X_height/2, 0, tan_it)
+endloop
+
+SelectSingletons("A","E","F","J","K","L","X","Z","AE","d","k","x","z","ae","oe")
+SelectMoreSingletons(0u250,0u276,0u277,0u279,0u27A,0u27E,0u27F,0u280,0u281,\
+0u28A,0u28E,0u28F,0u299,0u29F,0u2A1,0u2A2)
+foreach
+ add_anchor_med.ff("below", "basechar", 0, italic_angle)
+endloop
+
+SelectSingletons("B","D","P")
+foreach
+ add_anchor_med.ff("below", "basechar", 0, italic_angle, -space/15)
+endloop
+
+SelectSingletons("C","G","O","U","V","c","e","o","r","v","w",\
+0u18F,0u190,0u1DD,0u254,0u258,0u259,0u25B,0u298)
+SelectMoreSingletons(0u25A,0u25C,0u25D,0u25E,0u262,0u264,0u275,0u28B,0u296,\
+0u298,0u29A,0u29B)
+foreach
+ add_anchor_ext.ff("below", "basechar", 1, 0, tan_it)
+endloop
+
+SelectSingletons("a")
+foreach
+ add_anchor_ext.ff("below", "basechar", 3, 0, tan_it)
+endloop
+
+Select("t")
+bbox = GlyphInfo("BBox")
+add_anchor_ext.ff("below", "basechar", 1, 0, tan_it, -space/15)
+#add_anchor_ext.ff("above", "basechar", 3, Round(bbox[3]), tan_it)
+
+SelectSingletons("S","s")
+foreach
+ add_anchor_ext.ff("below", "basechar", 1, 0, tan_it, 0, 1)
+endloop
+
+SelectSingletons("b","h","i","l","m","n","u","dotlessi")
+SelectMoreSingletons(0u251,0u252,0u253,0u257,0u266,0u268,0u269,0u26A,0u26B,\
+0u26C,0u26f,0u274,0u289,0u28C,0u28D,0u294,0u295,0u29C)
+if (!cursive)
+ SelectMoreSingletons("f","longs")
+endif
+foreach
+ add_anchor_y.ff("below", "basechar", x_height/2, 0, tan_it)
+endloop
+
+SelectSingletons("p","q","eng",0u265,0u267,0u26D,0u270,0u271,0u273,0u286,0u2A0,0u2AE,\
+0u2AF)
+foreach
+ add_anchor_y.ff("below", "basechar", x_height/2, p_depth, tan_it)
+endloop
+
+SelectSingletons("Q")
+foreach
+ add_anchor_y.ff("below", "basechar", X_height/2, p_depth, tan_it)
+endloop
+
+SelectSingletons("g",0u260,0u261,0u263,0u297)
+foreach
+ add_anchor_ext.ff("below", "basechar", 1, p_depth, tan_it)
+endloop
+SelectSingletons("j",0u237,0u25F,0u292)
+foreach
+ add_anchor_ext.ff("below", "basechar", 1, p_depth, tan_it, space/10)
+endloop
+if (cursive)
+ Select("y")
+ add_anchor_ext.ff("below", "basechar", 1, p_depth, tan_it, -space/20)
+ SelectSingletons("f","longs")
+ foreach
+  add_anchor_ext.ff("below", "basechar", 1, p_depth, tan_it, space/15)
+  add_anchor_ext.ff("above", "basechar", 3, h_height, tan_it, -space/20)
+ endloop
+ Select(0u432)
+ add_anchor_ext.ff("above", "basechar", 3, o_height, tan_it)
+else
+ Select(0u44F)
+ add_anchor_med.ff("above", "basechar", o_height, italic_angle, space/20)
+ Select(0u432)
+ add_anchor_med.ff("above", "basechar", o_height, italic_angle, -space/20)
+ SelectSingletons("f","longs")
+ foreach
+  add_anchor_ext.ff("above", "basechar", 3, h_height, tan_it)
+ endloop
+ SelectSingletons("y",0u256,0u26E,0u272,0u278,0u27B,0u27C,0u27D,0u282,0u283,\
+ 0u284,0u285,0u287,0u288,0u290,0u291,0u29D,0u29E)
+ foreach
+  add_anchor_med.ff("below", "basechar", p_depth, italic_angle)
+ endloop
+endif
+
+SelectSingletons(0u401,0u407,0u451,0u457)
+foreach
+ bbox = GlyphInfo("BBox")
+ add_anchor_ext.ff("above", "basechar", 3, Round(bbox[3]), tan_it)
+endloop
+Select("Eogonek")
+bbox = GlyphInfo("BBox")
+add_anchor_y.ff("above", "basechar", Round(bbox[3] - 2), O_height, tan_it)
+
+if (affricate_above)
+Select("a","z")
+SelectMoreSingletons("eng")
+SelectMore(0u250,0u292)
+SelectMore(0u294,0u2A2)
+foreach
+ if (WorthOutputting())
+  width = GlyphInfo("Width")
+  AddAnchorPoint("affricate-above", "basechar", Round(width - tan_it*h_height), h_height)
+  AddAnchorPoint("affricate-below", "basechar", Round(width - tan_it*p_depth), p_depth)
+ endif
+endloop
+ endif
+
+Select("P")
+CopyAnchors()
+Select("R")
+PasteInto()
+if (WorthOutputting("Ohorn"))
+ Select("O")
+ CopyAnchors()
+ Select("Ohorn")
+ PasteInto()
+endif
+if (WorthOutputting("Uhorn"))
+ Select("U")
+ CopyAnchors()
+ Select("Uhorn")
+ PasteInto()
+endif
+if (WorthOutputting("ohorn"))
+ Select("o")
+ CopyAnchors()
+ Select("ohorn")
+ PasteInto()
+endif
+if (WorthOutputting("uhorn"))
+ Select("u")
+ CopyAnchors()
+ Select("uhorn")
+ PasteInto()
+endif
+if (WorthOutputting(0u293))
+ Select(0u292)
+ CopyAnchors()
+ Select(0u293)
+ PasteInto()
+endif
+
+if (WorthOutputting(0u328)) # combining ogonek
+  SelectSingletons("O","U","e","o")
+  if ( cursive )
+  SelectMore("i")
+  endif
+  foreach
+  add_anchor_ext.ff("ogonek", "basechar", 1, 0, tan_it)
+  endloop
+
+  SelectSingletons("E","I")
+  if ( !cursive )
+  SelectMore("i")
+  endif
+  foreach
+  add_anchor_med.ff("ogonek", "basechar", 0, italic_angle)
+  endloop
+
+  SelectSingletons("a","u")
+  foreach
+  if ( cursive )
+    add_anchor_ext.ff("ogonek", "basechar", 1, 0, tan_it, 0, 1)
+  else
+    x_max = GlyphInfo("Xextrema", x_height/2)
+    AddAnchorPoint("ogonek", "basechar", \
+    Round(x_max[1] - stem_width*0.5 + x_height/2*tan_it), 0)
+  endif
+  endloop
+
+ SelectSingletons("A")
+ if ( WorthOutputting() )
+  x_prof = GlyphInfo("XProfile",O_height/10)
+  AddAnchorPoint("ogonek", "basechar", \
+  Round((x_prof[2] + x_prof[3])*0.5 - O_height*tan_it*0.1), 0)
+ endif
+endif
+
+del_y = Round(X_height / 13.66) # 50 for cm
+#del_y = Round(X_height / 14.23) # for Liber
+del_mark = Round(X_height / 34.15) # 20
+del_y_cap = Round(X_height / 14.09) # for Liber
+
+# Shifts for acute and grave are based on existing (capital) oacute and ograve
+if ( WorthOutputting("oacute") )
+ Select("oacute")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", o_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("acute") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ acute_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(acute_shift)
+endif
+
+if ( WorthOutputting("ograve") )
+ Select("ograve")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", o_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("grave") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ grave_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(grave_shift)
+else
+ grave_shift = -acute_shift
+endif
+
+if ( WorthOutputting("ohungarumlaut") )
+ Select("ohungarumlaut")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", o_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("hungarumlaut") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ dblacute_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(dblacute_shift)
+endif
+
+if ( WorthOutputting("odblgrave") && WorthOutputting("uni030F"))
+ Select("odblgrave")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", o_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("uni030F") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ dblgrave_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(dblgrave_shift)
+else
+ dblgrave_shift = -dblacute_shift
+endif
+
+if (InFont("acute.cap"))
+if ( WorthOutputting("Oacute") )
+ Select("Oacute")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", O_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("acute.cap") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ acutecap_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(acutecap_shift)
+endif
+endif
+
+if (InFont("grave.cap"))
+if ( WorthOutputting("Ograve") )
+ Select("Ograve")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", O_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("grave.cap") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ gravecap_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(gravecap_shift)
+else
+ gravecap_shift = -acutecap_shift
+endif
+endif
+
+if (InFont("hungarumlaut.cap"))
+if ( WorthOutputting("Ohungarumlaut") )
+ Select("Ohungarumlaut")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", O_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("hungarumlaut.cap") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ dblacutecap_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(dblacutecap_shift)
+else
+ dblacutecap_shift = acutecap_shift
+endif
+endif
+
+if (InFont("space_uni030F.cap"))
+if ( WorthOutputting("Odblgrave") )
+ Select("Odblgrave")
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ oacutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ ox_ymax = GlyphInfo("Xextrema", O_height)
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ Select("space_uni030F.cap") 
+ if(italic_angle != 0)
+  CopyUnlinked()
+  Select("temporary_glyph")
+  Paste()
+  Skew(italic_angle/100.0,0,0)
+ endif 
+ bbox = GlyphInfo("BBox")
+ acutex_ymax = GlyphInfo("Xextrema", Floor(bbox[3]))
+ if(italic_angle != 0)
+  Clear()
+ endif 
+ width = Round((bbox[2] + bbox[0])/2 - acutex_ymax[0])
+ dblgravecap_shift = (ox_ymax[0] - oacutex_ymax[0]) - width
+ #Print(dblgravecap_shift)
+else
+ dblgravecap_shift = -dblacutecap_shift
+endif
+endif
+
+Select("acutecomb"); bbox = GlyphInfo("BBox")
+#x_ymax = GlyphInfo("Xextrema", Round(bbox[3]))
+#x_ymin = GlyphInfo("Xextrema", Round(bbox[1]))
+#y_xmax = GlyphInfo("Yextrema", Round(bbox[2]))
+#y_xmin = GlyphInfo("Yextrema", Round(bbox[0]))
+#acute_shift = Round(Sin(ATan2(bbox[3] - y_xmin[0], x_ymax[0] - bbox[0]) + ATan2(y_xmax[0] - bbox[1], bbox[2] - x_ymin[0]))*(bbox[2] - bbox[0])*0.14)
+#Print(acute_shift)
+# acute_shift = space/20
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle, acute_shift)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle, acute_shift)
+add_anchor_med.ff("above", "mark", o_height, italic_angle, acute_shift)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle, acute_shift)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, acute_shift)
+acute_height = Round(bbox[3] - bbox[1])
+Select("gravecomb"); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle, grave_shift)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle, grave_shift)
+add_anchor_med.ff("above", "mark", o_height, italic_angle, grave_shift)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle, grave_shift)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, grave_shift)
+Select(0u302); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u303); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u304); bbox = GlyphInfo("BBox")
+del_y_line = del_y + (acute_height - Round(bbox[3] - bbox[1]))/2
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_line), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_line), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u305); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_line), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_line), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u306); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u307); bbox = GlyphInfo("BBox")
+del_y_dot = del_y + (acute_height - Round(bbox[3] - bbox[1]))/2
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_dot), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_dot), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u308); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_dot), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_dot), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u309); bbox = GlyphInfo("BBox")
+#add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y), tan_it)
+#add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y), tan_it)
+add_anchor_ext.ff("above", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "mark", 1, o_height, tan_it)
+Select(0u30A); bbox = GlyphInfo("BBox")
+#add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y), tan_it)
+#add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y), tan_it)
+add_anchor_ext.ff("above", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "basemark", 3, Round(bbox[3] - del_mark), tan_it)
+Select(0u30B); bbox = GlyphInfo("BBox")
+#add_anchor_y.ff("above", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y), tan_it, dblacute_shift)
+#add_anchor_y.ff("above-mark", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y), tan_it, dblacute_shift)
+add_anchor_med.ff("above", "mark", o_height, italic_angle, dblacute_shift)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle, dblacute_shift)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, dblacute_shift)
+Select(0u30C); bbox = GlyphInfo("BBox")
+#add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y), tan_it)
+#add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y), tan_it)
+add_anchor_ext.ff("above", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "basemark", 1, Round(bbox[3] - del_mark), tan_it)
+Select(0u30D); bbox = GlyphInfo("BBox")
+#add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y), tan_it)
+#add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y), tan_it)
+add_anchor_ext.ff("above", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "mark", 1, o_height, tan_it)
+Select(0u30E); bbox = GlyphInfo("BBox")
+#add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y), tan_it)
+#add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y), tan_it)
+add_anchor_ext.ff("above", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "mark", 1, o_height, tan_it)
+add_anchor_ext.ff("above-mark", "basemark", 3, Round(bbox[3] - del_mark), tan_it)
+Select(0u30F); bbox = GlyphInfo("BBox")
+#add_anchor_y.ff("above", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y), tan_it, dblgrave_shift)
+#add_anchor_y.ff("above-mark", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y), tan_it, dblgrave_shift)
+add_anchor_med.ff("above", "mark", o_height, italic_angle, dblgrave_shift)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle, dblgrave_shift)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), -italic_angle, dblacute_shift)
+
+Select(0u311); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u316); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle, grave_shift)
+Select(0u317); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle, acute_shift)
+Select(0u318); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u319); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u31C); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u31D); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y), tan_it)
+Select(0u31E); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y), tan_it)
+Select(0u31F); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y), tan_it)
+
+Select(0u320); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y), tan_it)
+Select(0u323); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y_dot - o_depth), tan_it)
+Select(0u324); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_dot - o_depth), italic_angle)
+Select(0u325); bbox = GlyphInfo("BBox")
+add_anchor_ext.ff("below", "mark", 3, Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u326); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u327); bbox = GlyphInfo("BBox") # cedilla
+height = Round(bbox[3])
+if (height > 0)
+ if (height > 30)
+  height = height - 30
+ else
+  height = 0
+ endif
+endif
+add_anchor_ext.ff("below", "mark", 3, height, tan_it)
+Select(0u328)
+add_anchor_y.ff("ogonek", "mark", 0, 0, tan_it)
+Select(0u329); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32A); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32B); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32C); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32D); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32E); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u32F); bbox = GlyphInfo("BBox")
+add_anchor_ext.ff("below", "mark", 3, Round(bbox[3] + del_y - o_depth), tan_it)
+
+Select(0u330); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y - o_depth), italic_angle)
+Select(0u331); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_line - o_depth), italic_angle)
+Select(0u332); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_line - o_depth), italic_angle)
+Select(0u339); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y - o_depth), italic_angle)
+Select(0u33A); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u33B); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u33C); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y - o_depth), tan_it)
+Select(0u33D); bbox = GlyphInfo("BBox")
+#add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+#add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "mark", o_height, italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+
+Select(0u346); bbox = GlyphInfo("BBox")
+add_anchor_y.ff("above", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y), tan_it)
+add_anchor_y.ff("above-mark", "basemark", Round(bbox[1] + 2), Round(bbox[3] - del_mark), tan_it)
+Select(0u347); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u348); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u349); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+Select(0u34D); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y), italic_angle)
+
+Select(0u1DC5); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u1DC6); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u1DC8); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+Select(0u1DC9); bbox = GlyphInfo("BBox")
+add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y), italic_angle)
+add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+
+Select(0u361)
+add_anchor_med.ff("affricate-above", "mark", o_height, italic_angle)
+Select(0u35C)
+add_anchor_med.ff("affricate-below", "mark", p_depth, italic_angle)
+
+
+# Combining diacritics for capitals
+if (SelectIf("uni0301.cap") > 0)
+ bbox = GlyphInfo("BBox")
+# x_ymax = GlyphInfo("Xextrema", Round(bbox[3]))
+# x_ymin = GlyphInfo("Xextrema", Round(bbox[1]))
+# y_xmax = GlyphInfo("Yextrema", Round(bbox[2]))
+# y_xmin = GlyphInfo("Yextrema", Round(bbox[0]))
+# acutecap_shift = Round(Sin(ATan2(bbox[3] - y_xmin[0], x_ymax[0] - bbox[0]) + ATan2(y_xmax[0] - bbox[1], bbox[2] - x_ymin[0]))*(bbox[2] - bbox[0])*0.14)
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle, acutecap_shift)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle, acutecap_shift)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, acutecap_shift)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle, acutecap_shift)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, acutecap_shift)
+endif
+if (SelectIf("uni0300.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle, gravecap_shift)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle, gravecap_shift)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, gravecap_shift)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle, gravecap_shift)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, gravecap_shift)
+acute_height = Round(bbox[3] - bbox[1])
+endif
+if (SelectIf("uni0302.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0303.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0304.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ del_y_cap_line = del_y_cap + (acute_height - Round(bbox[3] - bbox[1]))/2
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap_line), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap_line), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0305.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ del_y_cap_line = del_y_cap + (acute_height - Round(bbox[3] - bbox[1]))/2
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap_line), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap_line), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0306.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0307.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ del_y_cap_dot = del_y_cap + (acute_height - Round(bbox[3] - bbox[1]))/2
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap_dot), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap_dot), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0308.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ del_y_cap_dot = del_y_cap + (acute_height - Round(bbox[3] - bbox[1]))/2
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap_dot), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap_dot), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0309.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ #add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ add_anchor_ext.ff("above", "mark", 1, O_height, tan_it)
+ add_anchor_ext.ff("above-mark", "mark", 1, O_height, tan_it)
+endif
+if (SelectIf("uni030A.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ #add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ add_anchor_ext.ff("above", "mark", 1, O_height, tan_it)
+ add_anchor_ext.ff("above-mark", "mark", 1, O_height, tan_it)
+ add_anchor_ext.ff("above-mark", "basemark", 3, Round(bbox[3] - del_mark), tan_it)
+endif
+if (SelectIf("uni030B.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_y.ff("above", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y_cap), tan_it, dblacutecap_shift)
+ #add_anchor_y.ff("above-mark", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y_cap), tan_it, dblacutecap_shift)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, dblacutecap_shift)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle, dblacutecap_shift)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, dblacutecap_shift)
+endif
+if (SelectIf("uni030C.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_ext.ff("above", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ #add_anchor_ext.ff("above-mark", "mark", 1, Round(bbox[1] - del_y_cap), tan_it)
+ add_anchor_ext.ff("above", "mark", 1, O_height, tan_it)
+ add_anchor_ext.ff("above-mark", "mark", 1, O_height, tan_it)
+ add_anchor_ext.ff("above-mark", "basemark", 1, Round(bbox[3] - del_mark), tan_it)
+endif
+if (SelectIf("uni030F.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_y.ff("above", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y_cap), tan_it, dblgravecap_shift)
+ #add_anchor_y.ff("above-mark", "mark", Round(bbox[1] + 2), Round(bbox[1] - del_y_cap), tan_it, dblgravecap_shift)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, dblgravecap_shift)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle, dblgravecap_shift)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle, dblgravecap_shift)
+endif
+if (SelectIf("uni0311.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ #add_anchor_med.ff("above", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ #add_anchor_med.ff("above-mark", "mark", Round(bbox[1] - del_y_cap), italic_angle)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "mark", O_height, italic_angle)
+ add_anchor_med.ff("above-mark", "basemark", Round(bbox[3] - del_mark), italic_angle)
+endif
+if (SelectIf("uni0323.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y_cap_dot - O_depth), tan_it)
+endif
+if (SelectIf("uni0324.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_cap_dot - O_depth), italic_angle)
+endif
+if (SelectIf("uni0325.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_ext.ff("below", "mark", 3, Round(bbox[3] + del_y_cap - O_depth), tan_it)
+endif
+if (SelectIf("uni032D.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y_cap - O_depth), tan_it)
+endif
+if (SelectIf("uni032E.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_y.ff("below", "mark", Round(bbox[3] - 2), Round(bbox[3] + del_y_cap - O_depth), tan_it)
+endif
+if (SelectIf("uni0330.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_cap - O_depth), italic_angle)
+endif
+if (SelectIf("uni0331.cap") > 0)
+ bbox = GlyphInfo("BBox")
+ add_anchor_med.ff("below", "mark", Round(bbox[3] + del_y_cap_line - O_depth), italic_angle)
+endif
+
+if (SelectIf("grave.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, gravecap_shift)
+endif
+if (SelectIf("acute.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, acutecap_shift)
+endif
+if (SelectIf("circumflex.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("tilde.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("macron.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("breve.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("dotaccent.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("dieresis.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("ring.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+if (SelectIf("hungarumlaut.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle, dblacutecap_shift)
+endif
+if (SelectIf("caron.cap") > 0)
+ add_anchor_med.ff("above", "mark", O_height, italic_angle)
+endif
+
+SelectSingletons("i","idieresis")
+foreach
+ bbox = GlyphInfo("BBox")
+ add_anchor_y.ff("above", "basechar", x_height/2, Round(bbox[3] - del_mark), tan_it)
+endloop
+
+
+if(italic_angle != 0)
+ Select("temporary_glyph")
+ Reencode("unicode")
+endif
+

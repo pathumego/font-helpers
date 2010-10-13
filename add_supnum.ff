@@ -1,0 +1,67 @@
+/*
+ * Copyright (C) 2008 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making superior figures from
+# existing regular ones
+#
+# 51.956815% - масштаб
+# 712 - смещение по y
+# 58% - C в (C)
+
+if ($argc > 1)
+ h_offset = $1 # shift of rotated glyph
+else
+ h_offset = 0
+endif
+if ($argc > 2)
+ mode = $2 
+else
+ mode = 0
+endif
+
+# Print(mode)
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+#tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Select("x")
+bbox = GlyphInfo("BBox")
+x_height_2 = Round((bbox[3] + bbox[1])*0.5)
+x_height = Round(bbox[3])
+
+Select("seven")
+bbox = GlyphInfo("BBox")
+digit_height = Round(bbox[3])
+
+Select("f")
+bbox = GlyphInfo("BBox")
+f_height = bbox[3]
+
+Select("o")
+bbox = GlyphInfo("BBox")
+asc_height_2 = Round((bbox[1]+f_height)*0.5)
+
+Select("X")
+bbox = GlyphInfo("BBox")
+X_height_2 = Round(bbox[3]*0.5)
+
+ modifier_height = Round(digit_height*0/3.0)
+ make_superscript.ff("1","uni00B9",modifier_height,tan_it)
+ make_superscript.ff("2","uni00B2",modifier_height,tan_it)
+ make_superscript.ff("3","uni00B3",modifier_height,tan_it)
