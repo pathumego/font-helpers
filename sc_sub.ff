@@ -38,10 +38,29 @@
      AddPosSub(lc_lang_c2sc, name);
     endif
     low = UCodePoint(ToLower(UnicodeFromName(cap_name)))
-    Select(low)
-    AddPosSub(lc_lang_smcp, name);
+    if (low > 0)
+     Select(low)
+     AddPosSub(lc_lang_smcp, name);
+    endif
    endif
   endif
  i++ 
  endloop
  SelectNone()
+
+if (WorthOutputting("ff") && InFont("FF.sc"))
+ Select("ff"); AddPosSub(lc_lang_smcp,"FF.sc");                                                                                                          
+endif
+if (WorthOutputting("fi") && InFont("FI.sc"))
+ Select("fi"); AddPosSub(lc_lang_smcp,"FI.sc");                                                                                                          
+endif
+if (WorthOutputting("fl") && InFont("FL.sc"))
+ Select("fl"); AddPosSub(lc_lang_smcp,"FL.sc");                                                                                                          
+endif
+if (WorthOutputting("ffi") && InFont("FFI.sc"))
+ Select("ffi"); AddPosSub(lc_lang_smcp,"FFI.sc");                                                                                                        
+endif
+if (WorthOutputting("ffl") && InFont("FFL.sc"))
+ Select("ffl"); AddPosSub(lc_lang_smcp,"FFL.sc");                                                                                                        
+endif
+SelectNone()
