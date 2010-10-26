@@ -1,6 +1,6 @@
 VERSION:=$(shell date +"%Y%m%d")
 PKGNAME=font-helpers
-DOCUMENTS=COPYING.scripts README.scripts
+DOCUMENTS=COPYING.scripts README.scripts ChangeLog.scripts
 FFSCRIPTS=add_accented.ff \
         add_anchor_ext.ff \
         add_anchor_med.ff \

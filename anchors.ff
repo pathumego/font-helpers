@@ -109,11 +109,11 @@ stem_width = (x_max[1] - x_max[0])
 SelectSingletons("c","e","o","ccedilla","aogonek","eogonek",\
 0u1DD,0u254,0u259,0u25B)
 SelectMoreSingletons("omicron","rho",\
-0u430,0u435,0u437,0u43B,0u43E,0u441,0u44D,0u454,0u4D9,0u4E9)
+0u435,0u437,0u43B,0u43E,0u441,0u44D,0u454,0u4D9,0u4E9)
 SelectMoreSingletons(0u255,0u258,0u25C,0u25D,0u25E,0u275,0u277,0u28C,\
 0u290,0u291,0u29A)
 if ( !cursive )
- SelectMore("a")
+ SelectMoreSingletons("a",0u430)
 endif
 #if (font_var != "ci")
  SelectMore("epsilon")
@@ -165,7 +165,7 @@ endloop
 
 SelectSingletons("s",0u25A,0u262,0u282,0u455)
 if ( cursive )
- SelectMore("a")
+ SelectMoreSingletons("a",0u430)
 endif
 foreach
  add_anchor_ext.ff("above", "basechar", 3, o_height, tan_it, 0, 0)

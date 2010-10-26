@@ -34,7 +34,9 @@ SelectFewerSingletons("T","Tcommaaccent","Tcaron","Thook","Trthook","uni021A",\
 SelectFewerSingletons("quotesingle","quotedblleft","quoteleft")
 i = 1
 while ( i < $argc)
- SelectFewerSingletons($argv[i])
+ if (InFont($argv[i]))
+  SelectFewerSingletons($argv[i])
+ endif
  i++
 endloop
 foreach

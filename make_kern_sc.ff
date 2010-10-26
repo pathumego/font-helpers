@@ -18,15 +18,31 @@
 # This fontforge script proposed for copying kerning info from small cap letters to
 # similar ones
 
-cop_kern_left.ff("afii10032.sc","afii10032.sc","uni04E8.sc","uni04EA.sc")
+# O-like letters
+cop_kern_left.ff("O.sc","C.sc","G.sc","Q.sc")
+cop_kern_right.ff("O.sc",0,"Q.sc")
+cop_kern_left.ff("afii10032.sc","afii10147.sc","afii10035.sc","uni04E8.sc","uni04EA.sc")
+cop_kern_right.ff("afii10032.sc",0,"afii10047.sc","afii10048.sc","afii10147.sc","uni04E8.sc","uni04EA","uni04EC.sc")
 cop_kern_left.ff("afii10035.sc","afii10053.sc")
+# Ha-like letters
 cop_kern_left.ff("afii10039.sc","uni04B2.sc")
-cop_kern_right.ff("afii10032.sc",0,"afii10047.sc","afii10048.sc","afii10032.sc","uni04E8.sc","uni04EA","uni04EC.sc")
-cop_kern_right.ff("afii10019.sc",0,"afii10019.sc")
+cop_kern_right.ff("afii10019.sc",0,"afii10019.sc") # Ve->Ze
 cop_kern_right.ff("afii10028.sc",0,"afii10024.sc","uni04C1.sc","uni04C1.sc")
 cop_kern_left.ff("afii10024.sc","uni0496.sc","uni04C1.sc","uni04C1.sc")
 
-cop_kern_left.ff("afii10026.sc","afii10027.sc","uni04E2.sc","uni04E4.sc")
-cop_kern_right.ff("afii10026.sc",0,"afii10027.sc","uni04E2.sc","uni04E4.sc")
-cop_kern_left.ff("afii10037.sc","afii10062.sc","uni04EE.sc","uni04F0.sc")
-cop_kern_right.ff("afii10037.sc",0,"afii10062.sc","uni04EE.sc","uni04F0.sc")
+# En-like letters
+cop_kern_left.ff("H.sc","B.sc","D.sc","E.sc","F.sc","H.sc","I.sc","K.sc","L.sc",\
+"M.sc","N.sc","P.sc","R.sc")
+cop_kern_right.ff("H.sc",0,"I.sc","M.sc","N.sc")
+cop_kern_left.ff("afii10031.sc","afii10059.sc","afii10145.sc","afii10018.sc",\
+"afii10019.sc","afii10020.sc","afii10022.sc","afii10026.sc","afii10028.sc",\
+"afii10030.sc","afii10033.sc","afii10034.sc","afii10040.sc","afii10042.sc",\
+"afii10043.sc","afii10045.sc","afii10046.sc","afii10048.sc","afii10050.sc")
+cop_kern_left.ff("afii10031.sc","uni0494.sc","uni049A.sc","uni04A2.sc","uni04A4.sc","uni04BA.sc","uni04C7.sc")
+cop_kern_right.ff("afii10031.sc",0,"afii10145.sc","afii10026.sc","afii10033.sc",\
+"afii10033.sc","afii10042.sc","afii10045.sc","afii10045.sc")
+
+#I-like letters
+cop_kern_acc.ff("afii10026.sc","afii10027.sc","uni04E2.sc","uni04E4.sc")
+#U-like letters
+cop_kern_acc.ff("afii10037.sc","afii10062.sc","uni04EE.sc","uni04F0.sc")
