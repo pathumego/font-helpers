@@ -151,8 +151,8 @@ Reencode("unicode")
 
  # Move combining glyphs to left and set their width to zero if non-zero
  Select(0u300,0u314)
- Select(0u316,0u319)
- Select(0u31C,0u34E)
+ SelectMore(0u316,0u319)
+ SelectMore(0u31C,0u34E)
  SelectMore(0u0484,0u0489)
  SelectMore(0u1DC0,0u1DFF)
  foreach
