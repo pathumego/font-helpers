@@ -23,6 +23,8 @@ tan_it = 1.0*Tan($italicangle*pi/180.0)
 
 Reencode("unicode")
 
+dub_glyph.ff("minute","uni02B9")
+dub_glyph.ff("second","uni02BA")
 make_dup_rot.ff("uni02D2","uni02D3",tan_it,-10000)
 dub_aligned.ff("uni02D2","uni02BE","tilde",tan_it)
 dub_aligned.ff("uni02D3","uni02BF","tilde",tan_it)

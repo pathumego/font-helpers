@@ -71,7 +71,7 @@ if ( mode == 0 )
  hflip_glyph.ff("s","uni01A8",italic_angle,x_height_2)
  hflip_glyph.ff("E","uni018E",italic_angle,X_height_2)
  hflip_glyph.ff("e","uni0258",italic_angle,x_height_2)
- hflip_glyph.ff("uni029A","uni025D",italic_angle,x_height_2)
+ hflip_glyph.ff("uni029A","uni025E",italic_angle,x_height_2)
 
 else
 
@@ -88,7 +88,7 @@ make_dup_rot.ff("r","uni0279",tan_it,x_height_2,h_offset)
 make_dup_rot.ff("t","uni0287",tan_it,x_height_2,h_offset)
 hflip_glyph.ff("uni025B","uni025C",italic_angle,x_height_2)
 hflip_glyph.ff("uni027E","uni027F",italic_angle,x_height_2)
-make_dup_rot.ff("uni0280","uni0281",tan_it,x_height_2)
+vflip_glyph.ff("uni0280","uni0281",italic_angle,x_height_2)
 hflip_glyph.ff("uni0294","uni0295",tan_it,x_height_2)
 make_dup_rot.ff("uni0294","uni0296",tan_it,asc_height_2)
 dub_glyph.ff("uni04E9","uni0275")

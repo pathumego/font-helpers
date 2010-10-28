@@ -1,0 +1,70 @@
+/*
+ * Copyright (C) 2005, 2008, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making second glyph from the first glyph by flipping
+
+first_glyph = $1;
+second_glyph = $2;
+italic_angle = $3;
+if ($argc > 4)
+ y_origin = $4 # y coordinate of origin of rotation (usually [x|X] height / 2)
+else
+ y_origin = 0
+endif
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+
+#Print("Make copy from ",first_glyph," to ",second_glyph)
+
+if (InFont(first_glyph))
+ if ( WorthOutputting(first_glyph) )
+  if (!InFont(second_glyph))
+   new_glyph.ff(second_glyph)
+  endif
+   if ( WorthOutputting(second_glyph) )
+    return
+   endif
+
+  Select(first_glyph)
+  width = GlyphInfo("Width")
+  Copy()
+  Select(second_glyph)
+  Paste()
+  if ($argc > 4)
+   x_origin = Round(width/2.0 - y_origin*tan_it)
+   VFlip(y_origin)
+  else
+   VFlip()
+  endif
+  CorrectDirection()
+  if (italic_angle != 0)
+   if ($argc > 4)
+    # Print(width, ", ", x_origin, ", ", y_origin)
+    Skew(-2*italic_angle, 100, x_origin, y_origin)
+   else
+    Skew(-2*italic_angle,100)
+   endif
+  endif
+  SetWidth(width)
+
+  RoundToInt ()
+  CanonicalStart()
+  CanonicalContours()
+  AutoHint ()
+
+ endif
+endif
