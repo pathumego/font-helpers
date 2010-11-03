@@ -21,12 +21,13 @@ import fontforge
 import sys, getopt
 
 def usage():
-  print " -i file, --input=file     input font file"
-  print " -o file, --output=file    output font file"
-  print " -s , --subtable           kerning subtable"
+  print " -i file, --input=file     	input font file"
+  print " -o file, --output=file    	output font file"
+  print " -s, --subtable=\"string\"	kerning subtable"
+  print " -t, --threshold=int      	remove kern |offsets| <= threshold (default 0)"
 
 try:
-  opts, args = getopt.getopt(sys.argv[1:], "hi:s:o:", ["help", "input=", "subtable=", "output="])
+  opts, args = getopt.getopt(sys.argv[1:], "hi:s:o:t:", ["help", "input=", "subtable=", "output=", "threshold="])
 except getopt.GetoptError, err:
   print "unrecognized option"
   usage()
@@ -35,6 +36,7 @@ outfile = None
 font_name = None
 kern_table = "LGC kerning subtable"
 kern_look = "LGC kerning"
+threshold = 0
 for (o, a) in opts:
   if o in ("-i", "--input"):
     font_name = a
@@ -45,6 +47,8 @@ for (o, a) in opts:
     outfile = a
   elif o in ("-s", "--subtable"):
     kern_table = a
+  elif o in ("-t", "--threshold"):
+    threshold = int(a)
 
 if not outfile:
   outfile = font_name
@@ -62,9 +66,10 @@ for glyf in selection:
       changekern = 0
       for subtable in oldtable:
         if subtable[1] == 'Pair':
-          if subtable[5] != 0:
+          temp = abs(subtable[5])
+          if temp > threshold:
 	    newtable += subtable,
-	  elif subtable[5] == 0:
+	  elif temp <= threshold:
 	    changekern = 1
       if changekern:
         glyf.removePosSub(kern_table)
