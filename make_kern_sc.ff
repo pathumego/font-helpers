@@ -46,3 +46,6 @@ cop_kern_right.ff("afii10031.sc",0,"afii10145.sc","afii10026.sc","afii10033.sc",
 cop_kern_acc.ff("afii10026.sc","afii10027.sc","uni04E2.sc","uni04E4.sc")
 #U-like letters
 cop_kern_acc.ff("afii10037.sc","afii10062.sc","uni04EE.sc","uni04F0.sc")
+
+cop_kern_right.ff("F.sc",0,"FF.sc")
+cop_kern_right.ff("L.sc",0,"FL.sc","FFL.sc")
