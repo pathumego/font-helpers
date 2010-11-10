@@ -63,9 +63,9 @@ if ( mode == 0 )
  make_dup_rot.ff("y","uni028E",tan_it,x_height_2)
  make_dup_rot.ff("uni027C","uni027A",tan_it,x_height_2)
  make_dup_rot.ff("k","uni029E",tan_it,x_height_2,h_offset)
- dub_glyph.ff(0u0432,"uni0299")
- dub_glyph.ff(0u043d,"uni029C")
- dub_glyph.ff(0u0475,"uni2C71")
+ dub_glyph.ff(0u0432,"uni0299",0)
+ dub_glyph.ff(0u043d,"uni029C",0)
+ dub_glyph.ff(0u0475,"uni2C71",0)
  
  hflip_glyph.ff("S","uni01A7",italic_angle,X_height_2)
  hflip_glyph.ff("s","uni01A8",italic_angle,x_height_2)
@@ -75,7 +75,7 @@ if ( mode == 0 )
 
 else
 
- dub_glyph.ff(0u0448,"uni026F")
+ dub_glyph.ff(0u0448,"uni026F",0)
 
 endif
 
@@ -91,7 +91,13 @@ hflip_glyph.ff("uni027E","uni027F",italic_angle,x_height_2)
 vflip_glyph.ff("uni0280","uni0281",italic_angle,x_height_2)
 hflip_glyph.ff("uni0294","uni0295",tan_it,x_height_2)
 make_dup_rot.ff("uni0294","uni0296",tan_it,asc_height_2)
-dub_glyph.ff("uni04E9","uni0275")
+dub_glyph.ff("Eth","Dcroat")
+dub_glyph.ff("uni04E0","uni01B7",0) # Ezh
+dub_glyph.ff("uni04E1","uni0292",0) 
+dub_glyph.ff("uni04D8","uni018F",0) # Schwa
+dub_glyph.ff("uni0275","uni01DD")
+dub_glyph.ff("uni04D9","uni0275",0)
+dub_glyph.ff("uni04D9","uni01DD",0)
 hflip_glyph.ff("uni02A1","uni02A2",tan_it,x_height_2)
 
 # Build modifiers
