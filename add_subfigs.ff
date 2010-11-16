@@ -1,0 +1,41 @@
+/*
+ * Copyright (C) 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making subscript figures from superscript
+# ones 
+# $1 is vertical shift of superscript figures in absolute units
+
+if ($argc < 1) 
+ Print("You must set vertical shift")
+ return
+endif
+
+
+#italic_angle=$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+dup_glyph_vertshift.ff(0u2070,0u2080,$1,tan_it)
+dup_glyph_vertshift.ff(0uB9,0u2081,$1,tan_it)
+dup_glyph_vertshift.ff(0uB2,0u2082,$1,tan_it)
+dup_glyph_vertshift.ff(0uB3,0u2083,$1,tan_it)
+dup_glyph_vertshift.ff(0u2074,0u2084,$1,tan_it)
+dup_glyph_vertshift.ff(0u2075,0u2085,$1,tan_it)
+dup_glyph_vertshift.ff(0u2076,0u2086,$1,tan_it)
+dup_glyph_vertshift.ff(0u2077,0u2087,$1,tan_it)
+dup_glyph_vertshift.ff(0u2078,0u2088,$1,tan_it)
+dup_glyph_vertshift.ff(0u2079,0u2089,$1,tan_it)
