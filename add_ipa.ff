@@ -99,6 +99,7 @@ dub_glyph.ff("uni0259","uni01DD")
 dub_glyph.ff("uni04D9","uni0259",0)
 dub_glyph.ff("uni04D9","uni01DD",0)
 hflip_glyph.ff("uni02A1","uni02A2",tan_it,x_height_2)
+dub_glyph.ff(0u427,"uniA78D",0)
 
 # Build modifiers
 if ( mode == 0 )

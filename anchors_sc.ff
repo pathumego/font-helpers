@@ -1,0 +1,277 @@
+/*
+ * Copyright (C) 2006, 2008, 2009, 2010 Andrey V. Panov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for addition of anchors to smallcaps
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+#tan_it = 1.0*Tan(italic_angle/100.0*pi/180.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Reencode("unicode")
+
+Select("space")
+space=GlyphInfo("Width")
+
+Select("O.sc")
+bbox = GlyphInfo("BBox")
+O_height = Round(bbox[3])
+O_depth = Round(bbox[1])
+
+Select("H.sc")
+bbox = GlyphInfo("BBox")
+X_height = Round(bbox[3])
+
+SelectSingletons("A","O","Q","Aogonek",0u186,0u18F,0u190,0u410,0u41E,\
+0u42D,0u4D8,0u4E8,0u298)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("C","G","S","Ccedilla",0u404,0u405,0u421)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it, 0, 0)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("afii10025")
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_ext.ff("above", "basechar", 3, O_height, tan_it, 1, 0)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("H","I","J","M","N","T","U","V","W","Y","Iota","Upsilon")
+SelectMoreSingletons(0u406,0u414,0u416,0u418,0u41B,0u41C,0u41D,0u41F,0u422,0u424,0u425,0u426,0u428,\
+0u429,0u42B,0u42E,0u4AE,0u4B0,0u4C9)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_y.ff("above", "basechar", X_height/2, O_height, tan_it)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+if (InFont("afii10148.sc")) #Izhitsa
+ Select("V.sc")
+ CopyAnchors()
+ Select("afii10148.sc")
+ PasteInto()
+endif
+
+SelectSingletons("E","F","K","L","X","Z",0u1B7,0u411,0u413,0u415,0u41A,\
+0u423,0u427,0u42A,0u42C) # ,"AE",0u4D4
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_med.ff("above", "basechar", O_height, italic_angle)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+Select("E.sc")
+bbox = GlyphInfo("BBox")
+y_prof = GlyphInfo("YProfile",Round((bbox[0] + bbox[2])*0.5))
+height = Round(y_prof[1]) + 1
+SelectSingletons("AE",0u4D4,"OE")
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    x_prof = GlyphInfo("XProfile",height)
+    AddAnchorPoint("above", "basechar", \
+    Round((x_prof[2] + x_prof[3])*0.5 - O_height*tan_it*0.75), O_height)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("B","D","P",0u412,0u420)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_med.ff("above", "basechar", O_height, italic_angle, -space/20)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons(0u42F)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_med.ff("above", "basechar", O_height, italic_angle, space/10)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+if (InFont("afii10146.sc"))
+ SelectSingletons("afii10146.sc") # Yat
+ add_anchor_y.ff("above", "basechar", X_height, O_height, tan_it)
+endif
+
+# "below" mark
+
+SelectSingletons("H","I","M","N","T","W","Y")
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_y.ff("below", "basechar", X_height/2, 0, tan_it)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("A","E","F","J","K","L","X","Z","AE","d","k","x","z","ae","oe")
+SelectMoreSingletons(0u250,0u276,0u277,0u279,0u27A,0u27E,0u27F,0u280,0u281,\
+0u28A,0u28E,0u28F,0u299,0u29F,0u2A1,0u2A2)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_med.ff("below", "basechar", 0, italic_angle)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("B","D","P")
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_med.ff("below", "basechar", 0, italic_angle, -space/20)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("C","G","O","U","V",\
+0u18F,0u190,0u1DD,0u254,0u258,0u259,0u25B,0u298)
+SelectMoreSingletons(0u25A,0u25C,0u25D,0u25E,0u262,0u264,0u275,0u28B,0u296,\
+0u298,0u29A,0u29B)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    add_anchor_ext.ff("below", "basechar", 1, 0, tan_it)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+
+SelectSingletons("S.sc")
+foreach
+ add_anchor_ext.ff("below", "basechar", 1, 0, tan_it, 0, 1)
+endloop
+
+SelectSingletons(0u401,0u407,0u451,0u457)
+foreach
+ if ( WorthOutputting() )
+  glyph_name_sc = GlyphInfo("Name")+".sc"
+  if (InFont(glyph_name_sc))
+   if (DrawsSomething(glyph_name_sc))
+    Select(glyph_name_sc)
+    bbox = GlyphInfo("BBox")
+    add_anchor_ext.ff("above", "basechar", 3, Round(bbox[3]), tan_it)
+    SelectNone()
+   endif
+  endif
+ endif
+endloop
+Select("Eogonek")
+bbox = GlyphInfo("BBox")
+add_anchor_y.ff("above", "basechar", Round(bbox[3] - 2), O_height, tan_it)
+
+if (InFont("P.sc") && InFont("R.sc"))
+ Select("P.sc")
+ CopyAnchors()
+ Select("R.sc")
+ PasteInto()
+endif
+if (InFont("Ohorn.sc") && InFont("O.sc"))
+ Select("O.sc")
+ CopyAnchors()
+ Select("Ohorn.sc")
+ PasteInto()
+endif
+if (InFont("Uhorn.sc") && InFont("O.sc"))
+ Select("U.sc")
+ CopyAnchors()
+ Select("Uhorn.sc")
+ PasteInto()
+endif
+
