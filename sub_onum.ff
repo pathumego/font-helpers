@@ -17,6 +17,12 @@
 
 # This fontforge script proposed for making onum substitutions to glyphs with ".oldstyle" suffix
 
+if ($argc == 2)
+ osuffix = $1
+else
+ osuffix = ".oldstyle"
+endif
+
 AddLookup("Oldstyle substitutions", "gsub_single", 0, [["onum",[["cyrl",["dflt"]],["grek",["dflt"]],["latn",["dflt"]]]]])
 AddLookupSubtable("Oldstyle substitutions", "Oldstyle substitutions subtable")
 #Select(0u300,0u331)
@@ -24,8 +30,7 @@ SelectWorthOutputting()
 foreach
  if ( WorthOutputting() )
   glyph_name = GlyphInfo("Name")
-  #glyph_name_cap = "uni" + Strsub(ToString(UCodePoint(UnicodeFromName(glyph_name))), 2) + ".tab"
-  glyph_name_cap = glyph_name + ".oldstyle"
+  glyph_name_cap = glyph_name + osuffix
   if (InFont(glyph_name_cap))
    if (DrawsSomething(glyph_name_cap))
     AddPosSub("Oldstyle substitutions subtable", glyph_name_cap) 

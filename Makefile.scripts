@@ -2,17 +2,21 @@ VERSION:=$(shell date +"%Y%m%d")
 PKGNAME=font-helpers
 DOCUMENTS=COPYING.scripts README.scripts ChangeLog.scripts
 FFSCRIPTS=add_accented.ff \
+	add_accented_sc.ff \
         add_anchor_ext.ff \
         add_anchor_med.ff \
         add_anchor_y.ff \
         add_ipa.ff \
         add_private.ff \
+        add_subfigs.ff \
         add_supnum.ff \
         alt_sub.ff \
         anchors.ff \
+        anchors_sc.ff \
         case_sub.ff \
         combining.ff \
         combining_mono.ff \
+        combining_sc.ff \
         cop_glyph.ff \
         cop_kern_acc.ff \
         cop_kern.ff \
@@ -23,6 +27,7 @@ FFSCRIPTS=add_accented.ff \
         dub_aligned.ff \
         dub_glyph_ch.ff \
         dub_glyph.ff \
+        dup_glyph_vertshift.ff \
         getcvt.ff \
         hflip_glyph.ff \
         inst_acc.py \
@@ -40,6 +45,7 @@ FFSCRIPTS=add_accented.ff \
         mergekern.ff \
         new_glyph.ff \
         same_cyrext.ff \
+        same_cyrext_sc.ff \
         same_cyr_it.ff \
         same_cyr_rm.ff \
         same_kern.ff \
@@ -48,7 +54,8 @@ FFSCRIPTS=add_accented.ff \
         serbsubs.ff \
         spaces_dashes.ff \
         sub_onum.ff \
-        tab_sub.ff
+        tab_sub.ff \
+        vflip_glyph.ff
 
 COMPRESS=xz -9
 

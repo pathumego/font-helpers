@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Andrey V. Panov 
+ * Copyright (C) 2009 Andrey V. Panov
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
  lc_lang_smcp = "LC small to smallcaps subtable"
  AddLookup("LC small to smallcaps", "gsub_single", 0, [["smcp",[["latn",["dflt"]],["cyrl",["dflt"]]]]])
  AddLookupSubtable("LC small to smallcaps", lc_lang_smcp)
- 
- SelectWorthOutputting() 
+
+ SelectWorthOutputting()
  selection=$selection
  j=SizeOf(selection)
  SelectNone()
@@ -44,23 +44,38 @@
     endif
    endif
   endif
- i++ 
+ i++
+ endloop
+ # map *.cap glyphs to *.sc
+ i=0
+ while(i<j)
+  if ( selection[i] && SelectIf(i) == 1)
+   name = GlyphInfo ("Name")
+   cap_end=Strstr(name, ".cap")
+   if (cap_end > 0)
+    sc_name=Strsub(name, 0, cap_end) + ".sc"
+    if (InFont(sc_name) == 1)
+     AddPosSub(lc_lang_c2sc, sc_name);
+    endif
+   endif
+  endif
+ i++
  endloop
  SelectNone()
 
 if (WorthOutputting("ff") && InFont("FF.sc"))
- Select("ff"); AddPosSub(lc_lang_smcp,"FF.sc");                                                                                                          
+ Select("ff"); AddPosSub(lc_lang_smcp,"FF.sc");
 endif
 if (WorthOutputting("fi") && InFont("FI.sc"))
- Select("fi"); AddPosSub(lc_lang_smcp,"FI.sc");                                                                                                          
+ Select("fi"); AddPosSub(lc_lang_smcp,"FI.sc");
 endif
 if (WorthOutputting("fl") && InFont("FL.sc"))
- Select("fl"); AddPosSub(lc_lang_smcp,"FL.sc");                                                                                                          
+ Select("fl"); AddPosSub(lc_lang_smcp,"FL.sc");
 endif
 if (WorthOutputting("ffi") && InFont("FFI.sc"))
- Select("ffi"); AddPosSub(lc_lang_smcp,"FFI.sc");                                                                                                        
+ Select("ffi"); AddPosSub(lc_lang_smcp,"FFI.sc");
 endif
 if (WorthOutputting("ffl") && InFont("FFL.sc"))
- Select("ffl"); AddPosSub(lc_lang_smcp,"FFL.sc");                                                                                                        
+ Select("ffl"); AddPosSub(lc_lang_smcp,"FFL.sc");
 endif
 SelectNone()
