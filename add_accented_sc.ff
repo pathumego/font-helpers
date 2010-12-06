@@ -1,0 +1,190 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making accented smallcap glyphs using anchors,
+# copying kerning info and anchors with vertical shist from base letters to
+# accented ones
+
+italic_angle=100*$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+lc_lang_c2sc = "LC caps to smallcaps subtable"
+lc_lang_smcp = "LC small to smallcaps subtable"
+
+del_mark = 0
+Select(0u301)
+if (WorthOutputting())
+ bbox = GlyphInfo("BBox")
+ height = bbox[3]
+ anchors_ref = GetAnchorPoints()
+ size_ar = SizeOf(anchors_ref)
+ j = 0
+ while (j < size_ar)
+  if (anchors_ref[j][0] == "above-mark" && anchors_ref[j][1] == "basemark")
+   del_mark = Round(height - anchors_ref[j][3])
+   break
+  endif
+  j++
+ endloop
+endif
+
+Select("Agrave","Aring")
+SelectMore("Egrave","Idieresis")
+SelectMore("Ntilde","Odieresis")
+SelectMore("Ugrave","Yacute")
+SelectMoreSingletons("Amacron","Abreve")
+SelectMore("Cacute","Dcaron")
+SelectMore("Emacron","Edotaccent")
+SelectMore("Ecaron","Gdotaccent")
+SelectMore("Hcircumflex")
+SelectMore("Itilde","Ibreve")
+SelectMore("Idotaccent")
+SelectMore("Jcircumflex")
+SelectMore("Lacute")
+SelectMore("Nacute")
+SelectMore("Ncaron")
+SelectMore("Omacron","Ohungarumlaut")
+SelectMore("Racute")
+SelectMore("Rcaron","Scircumflex")
+SelectMore("Scaron")
+SelectMore("Tcaron")
+SelectMore("Utilde","Uhungarumlaut")
+SelectMore("Wcircumflex","Zcaron")
+SelectMore("Acaron","Ucaron")
+SelectMore("AEmacron")
+SelectMore("Gcaron","Kcaron")
+SelectMore("Oogonekmacron",0u1EE)
+SelectMore("Gacute")
+SelectMore(0u1F8) # ngrave
+SelectMore("AEacute","Uinvertedbreve")
+SelectMore(0u21E) # hcaron
+SelectMore(0u226) # a_dotaccent
+SelectMore(0u22E) #o_dotaccent
+SelectMore(0u232) #ymacron
+SelectMoreSingletons(0u403,0u40C,0u453,0u45C)
+SelectMoreSingletons(0u4C1,0u4D0,0u4D2,0u4D6,0u4DC,0u4DE)
+SelectMoreSingletons(0u4E2,0u4E4,0u4E6,0u4EA)
+SelectMore(0u4EA,0u4F4)
+SelectMore(0u4F8)
+SelectMore("Bdotaccent")
+SelectMoreSingletons(0u1E08,0u1E0A)
+SelectMore(0u1E1C,0u1E22)
+SelectMore("Hdieresis")
+SelectMore("Kacute")
+SelectMore("Macute","Mdotaccent")
+SelectMore("Ndotaccent")
+SelectMore("Pacute","Rdotaccent")
+SelectMore("Sdotaccent")
+SelectMore("Tdotaccent")
+SelectMore("Vtilde")
+SelectMore("Wgrave","Wdotaccent")
+SelectMore("Xdotaccent","Zcircumflex")
+SelectMore("Ygrave")
+SelectMore("Etilde")
+SelectMore("Ytilde")
+if (InFont("uni04D8.sc"))
+ SelectMore(0u4DA)
+endif
+
+foreach
+ namecap = GlyphInfo("Name")
+ unicap = GlyphInfo("Unicode")
+ namesc = namecap + ".sc"
+ # Check references of capital glyph for capital letters
+ ucrefs = GlyphInfo("RefNames")
+ size_refs = SizeOf(ucrefs)
+ i = 0
+ scbaseref = 0
+ while (i < size_refs)
+  ref_u = UnicodeFromName(ucrefs[i])
+  if (IsAlpha(ref_u) && IsUpper(ref_u))
+   sc_base = ucrefs[i] + ".sc"
+   if (InFont(sc_base))
+    if (WorthOutputting(sc_base))
+     scbaseref = 1
+    endif
+   endif
+  endif
+  i++
+ endloop
+ if (WorthOutputting() && IsUpper(unicap) && !InFont(namesc) && scbaseref)
+  new_glyph.ff(namesc)
+  if (! WorthOutputting(namesc))
+   Select(namesc)
+   BuildAccented()
+  endif
+  if (WorthOutputting(namesc))
+   refs = GlyphInfo("RefNames")
+   name = GlyphInfo("Name")
+   bbox = GlyphInfo("BBox")
+   height = bbox[3]
+   size_refs = SizeOf(refs)
+   i = 0
+   while (i < size_refs)
+    ref_u = UnicodeFromName(refs[i])
+    if (IsAlpha(ref_u))
+     cop_kern_acc.ff(refs[i],name)
+     Select(refs[i])
+     bbox_ref = GlyphInfo("BBox")
+     height_ref = bbox_ref[3]
+     anchors_ref = GetAnchorPoints()
+     size_ar = SizeOf(anchors_ref)
+     dh = Round(height - height_ref)
+     j = 0
+     above_exist = 0
+     below_exist = 0
+     while (j < size_ar)
+      if (anchors_ref[j][0] == "above")
+       j_ab = j
+       above_exist = 1
+      elseif (anchors_ref[j][0] == "below")
+       j_be = j
+       below_exist = 1
+      endif
+      j++
+     endloop
+     if (above_exist)
+      if (dh > 0)
+       dy = dh - del_mark
+       dx = dy * tan_it
+      else
+       dy = 0
+       dx = 0
+      endif
+      Select(name)
+      AddAnchorPoint("above", "basechar", Round(anchors_ref[j_ab][2] - dx), Round(anchors_ref[j_ab][3] + dy))
+     endif
+     if(below_exist && (bbox[1] == bbox_ref[1]))
+      Select(name)
+      AddAnchorPoint("below", "basechar", Round(anchors_ref[j_be][2]), Round(anchors_ref[j_be][3]))
+     endif
+     Select(name)
+    endif
+    i++
+   endloop
+   Select(namecap)
+   AddPosSub(lc_lang_c2sc, namesc);
+   low = UCodePoint(ToLower(UnicodeFromName(namecap)))
+   if (low > 0)
+    Select(low)
+    AddPosSub(lc_lang_smcp, namesc);
+   endif
+  endif
+  SelectNone()
+ endif
+endloop

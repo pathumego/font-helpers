@@ -1,0 +1,30 @@
+/*
+ * Copyright (C) 2009, 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+Reencode("unicode")
+
+dub_glyph.ff("Ccedilla.sc","uni04AA.sc")
+dub_glyph.ff("Y.sc","uni04AE.sc")
+dub_glyph.ff("I.sc","uni04C0.sc")
+dub_glyph.ff("Abreve.sc","uni04D0.sc")
+dub_glyph.ff("Adieresis.sc","uni04D2.sc")
+dub_glyph.ff("AE.sc","uni04D4.sc")
+dub_glyph.ff("Ebreve.sc","uni04D6.sc")
+dub_glyph.ff("Schwa.sc","uni04D8.sc")
+dub_glyph.ff("Odieresis.sc","uni04E6.sc")
+
+Reencode("unicode")

@@ -1,0 +1,56 @@
+/*
+ * Copyright (C) 2010 Andrey V. Panov
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making combining glyphs for smallcaps
+
+if ($argc == 2)
+ y_shift = $1 
+else
+ Select("H.sc")
+ bbox = GlyphInfo("BBox")
+ X_height = Round(bbox[3])
+ Select("x")
+ bbox = GlyphInfo("BBox")
+ x_height = Round(bbox[3])
+ y_shift = X_height - x_height
+endif
+
+
+#italic_angle=$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+dup_glyph_vertshift.ff(0u300,"uni0300.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u301,"uni0301.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u302,"uni0302.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u303,"uni0303.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u304,"uni0304.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u306,"uni0306.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u307,"uni0307.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u308,"uni0308.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u309,"uni0309.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30A,"uni030A.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30B,"uni030B.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30C,"uni030C.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30D,"uni030D.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30E,"uni030E.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u30F,"uni030F.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u310,"uni0310.sc",y_shift,tan_it)
+dup_glyph_vertshift.ff(0u311,"uni0311.sc",y_shift,tan_it)
+
+Reencode("unicode")
+
