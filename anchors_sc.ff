@@ -273,23 +273,25 @@ foreach
   endif
  endif
 endloop
-Select("Eogonek")
-bbox = GlyphInfo("BBox")
-add_anchor_y.ff("above", "basechar", Round(bbox[3] - 2), O_height, tan_it)
+if (WorthOutputting("Eogonek.sc"))
+ Select("Eogonek.sc")
+ bbox = GlyphInfo("BBox")
+ add_anchor_y.ff("above", "basechar", Round(bbox[3] - 2), O_height, tan_it)
+endif
 
-if (InFont("P.sc") && InFont("R.sc"))
+if (WorthOutputting("P.sc") && WorthOutputting("R.sc"))
  Select("P.sc")
  CopyAnchors()
  Select("R.sc")
  PasteInto()
 endif
-if (InFont("Ohorn.sc") && InFont("O.sc"))
+if (InFont("Ohorn.sc") && WorthOutputting("O.sc"))
  Select("O.sc")
  CopyAnchors()
  Select("Ohorn.sc")
  PasteInto()
 endif
-if (InFont("Uhorn.sc") && InFont("O.sc"))
+if (InFont("Uhorn.sc") && WorthOutputting("U.sc"))
  Select("U.sc")
  CopyAnchors()
  Select("Uhorn.sc")
