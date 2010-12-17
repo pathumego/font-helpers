@@ -92,6 +92,7 @@ vflip_glyph.ff("uni0280","uni0281",italic_angle,x_height_2)
 hflip_glyph.ff("uni0294","uni0295",tan_it,x_height_2)
 make_dup_rot.ff("uni0294","uni0296",tan_it,asc_height_2)
 dub_glyph.ff("Eth","Dcroat")
+dub_glyph.ff("Eth","uni0189")
 dub_glyph.ff("uni04E0","uni01B7",0) # Ezh
 dub_glyph.ff("uni04E1","uni0292",0) 
 dub_glyph.ff("uni04D8","uni018F",0) # Schwa

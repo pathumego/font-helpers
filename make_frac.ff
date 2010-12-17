@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+# This script makes vulgar fraction
+
+upper_digit = $1
+hoff1 = $2
+voff1 = $3
+lower_glyph = $4
+hoff2 = $5
+voff2 = $6
+fraction = $7
+hofff = $8
+vofff = $9
+final_glyph = $10
+width = $11
+
+if (InFont(upper_digit) && InFont(lower_glyph) && InFont(fraction)) 
+ if ( WorthOutputting(upper_digit) && WorthOutputting(lower_glyph) && WorthOutputting(fraction) )
+  if (!InFont(final_glyph)) 
+   new_glyph.ff(final_glyph)
+  endif
+  if ( WorthOutputting(final_glyph) )
+   return
+  endif
+
+  Select(upper_digit)
+  CopyReference()
+  Select(final_glyph)
+  PasteWithOffset(hoff1,voff1)
+
+  Select(lower_glyph)
+  CopyReference()
+  Select(final_glyph)
+  PasteWithOffset(hoff2,voff2)
+
+  Select(fraction)
+  CopyReference()
+  Select(final_glyph)
+  PasteWithOffset(hofff,vofff)
+  SetWidth(width)
+  RoundToInt()
+
+ endif
+endif

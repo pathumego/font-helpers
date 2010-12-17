@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2010 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making vulgar fractions from superscript
+# figures and fraction sign
+
+if ($argc != 7) 
+ Print("Wrong parameter number")
+ return
+endif
+
+
+hoff1 = $1
+voff1 = $2
+hoff2 = $3
+voff2 = $4
+hofff = $5
+vofff = $6
+
+
+#italic_angle=$italicangle
+pi=4.0*ATan2(1.0,1.0)
+tan_it = 1.0*Tan($italicangle*pi/180.0)
+
+Select("onehalf")
+width=GlyphInfo("Width")
+
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0u2077,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2150,width)
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0u2079,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2151,width)
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0uB3,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2153,width)
+make_frac.ff(0uB2,hoff1-voff1*tan_it,voff1,0uB3,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2154,width)
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0u2075,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2155,width)
+make_frac.ff(0uB2,hoff1-voff1*tan_it,voff1,0u2075,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2156,width)
+make_frac.ff(0uB3,hoff1-voff1*tan_it,voff1,0u2075,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2157,width)
+make_frac.ff(0u2074,hoff1-voff1*tan_it,voff1,0u2075,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2158,width)
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0u2076,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u2159,width)
+make_frac.ff(0u2075,hoff1-voff1*tan_it,voff1,0u2076,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u215A,width)
+make_frac.ff("onesuperior",hoff1-voff1*tan_it,voff1,0u2078,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u215B,width)
+make_frac.ff(0uB3,hoff1-voff1*tan_it,voff1,0u2078,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u215C,width)
+make_frac.ff(0u2075,hoff1-voff1*tan_it,voff1,0u2078,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u215D,width)
+make_frac.ff(0u2077,hoff1-voff1*tan_it,voff1,0u2078,hoff2-voff2*tan_it,voff2,"fraction",hofff-vofff*tan_it,vofff,0u215E,width)

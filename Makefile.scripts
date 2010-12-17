@@ -6,6 +6,7 @@ FFSCRIPTS=add_accented.ff \
         add_anchor_ext.ff \
         add_anchor_med.ff \
         add_anchor_y.ff \
+        add_fracs.ff \
         add_ipa.ff \
         add_private.ff \
         add_subfigs.ff \
@@ -39,6 +40,7 @@ FFSCRIPTS=add_accented.ff \
         make_double.ff \
         make_dup_rot.ff \
         make_dup_vertshift.ff \
+        make_frac.ff \
         make_kern.ff \
         make_kern_sc.ff \
         make_superscript.ff \
