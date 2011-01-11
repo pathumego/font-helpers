@@ -53,6 +53,7 @@ FFSCRIPTS=add_accented.ff \
         same_kern.ff \
         same_kern_sc.ff \
         sc_sub.ff \
+        scsmall_sub.ff \
         serbsubs.ff \
         spaces_dashes.ff \
         sub_onum.ff \
