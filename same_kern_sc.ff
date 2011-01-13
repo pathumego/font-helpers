@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009, 2010 Andrey V. Panov 
+ * Copyright (C) 2009, 2010, 2011 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,22 @@
 
 # This fontforge script proposed for copying kerning info from small cap Latin letters to 
 # similar Cyrillic ones
+
+copyen = 0
+globkernlookup = 0
+
+if ($argc > 1)
+ i = 1
+ while ( i < $argc)
+  arg = $argv[i]
+  if (arg == "copyen")
+   copyen = 1
+  elseif (arg == "globkern")
+   globkernlookup = 1
+  endif
+  i++
+ endloop
+endif
 
 latin_gl=["A","B","E","H","I","M","O","P","T","X","C","J","Idieresis","Edieresis","Ccedilla","Y","I","Abreve","Adieresis","AE","Ebreve","Odieresis"]
 cyr_gl=["uni0410","uni0412","uni0415","uni041d","uni0406","uni041c","uni041e","uni0420","uni0422","uni0425","uni0421","uni0408","uni0407","uni0401","uni04AA","uni04AE","uni04C0","uni04D0","uni04D2","uni04D4","uni04D6","uni04E6"]
@@ -68,8 +84,12 @@ while (i < size_ar)
      Select(cyr_gl_sc[i])
      kern_2 = GlyphInfo("Kern", cyr_gl_sc[j])
      if (kern_2 == 0)
-      SetKern(cyr_gl_sc[j],kern)
+      if (globkernlookup)
+       SetKern(cyr_gl_sc[j],kern,_kern_subtable)
       #Print ("Setting kerning ",cyr_gl_sc[i]," ",cyr_gl_sc[j]," to ",kern)
+      else
+       SetKern(cyr_gl_sc[j],kern)
+      endif
      endif
     endif
    endif

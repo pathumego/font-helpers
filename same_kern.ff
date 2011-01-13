@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009, 2010 Andrey V. Panov 
+ * Copyright (C) 2009, 2010, 2011 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,24 @@
 # This fontforge script proposed for copying kerning info from Latin letters to 
 # similar Cyrillic ones
 
-cursive = $1;
+cursive = 0
+copyen = 0
+globkernlookup = 0
+
+if ($argc > 1)
+ i = 1
+ while ( i < $argc)
+  arg = $argv[i]
+  if (arg == "cursive")
+   cursive = 1
+  elseif (arg == "copyen")
+   copyen = 1
+  elseif (arg == "globkern")
+   globkernlookup = 1
+  endif
+  i++
+ endloop
+endif
 
 if (cursive)
  latin_gl=["A","B","E","H","I","M","O","P","T","X","C","a","e","u","o","p","c","n","m","x","s","S","j","J","Idieresis","Edieresis","edieresis","i","y","Ccedilla","ccedilla","Y","h","I","Abreve","abreve","Adieresis","adieresis","AE","ae","Ebreve","ebreve","Odieresis","odieresis"]
@@ -51,7 +68,11 @@ while (i < size_ar)
      Select(cyr_gl[i])
      kern_2 = GlyphInfo("Kern", cyr_gl[j])
      if (kern_2 == 0)
-      SetKern(cyr_gl[j],kern)
+      if (globkernlookup)
+       SetKern(cyr_gl[j],kern,_kern_subtable)
+      else
+       SetKern(cyr_gl[j],kern)
+      endif
      endif
     endif
    endif
@@ -61,7 +82,7 @@ while (i < size_ar)
  i++
 endloop
 
-if (!cursive)
+if (copyen)
  i = 0
  while (i < size_ar)
   if ( WorthOutputting(latin_gl[i]) && WorthOutputting(cyr_gl[i]))
@@ -72,7 +93,11 @@ if (!cursive)
      Select(cyr_gl[i])
      kern_2 = GlyphInfo("Kern", "en")
      if (kern_2 == 0)
-      SetKern("en",kern)
+      if (globkernlookup)
+       SetKern("en",kern,_kern_subtable)
+      else
+       SetKern("en",kern)
+      endif
      endif
     endif
    endif

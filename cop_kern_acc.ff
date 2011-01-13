@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Andrey V. Panov 
+ * Copyright (C) 2009, 2011 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  */
 
 # This fontforge script proposed for copying kerning info from second glyph to the first
+
+# _kern_subtable = "LGC kerning subtable"
 
 first_glyph = $1;
 if ($argc < 2)
@@ -45,7 +47,7 @@ foreach
   i = 2
   while ( i < $argc)
    if ( WorthOutputting($argv[i]) )
-    SetKern($argv[i],kern)
+    SetKern($argv[i],kern,_kern_subtable)
    endif
    i++
   endloop
