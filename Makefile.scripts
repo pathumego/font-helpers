@@ -15,6 +15,7 @@ FFSCRIPTS=add_accented.ff \
         anchors.ff \
         anchors_sc.ff \
         case_sub.ff \
+        clean_empty_kerns.py \
         combining.ff \
         combining_mono.ff \
         combining_sc.ff \
@@ -29,6 +30,7 @@ FFSCRIPTS=add_accented.ff \
         dub_glyph_ch.ff \
         dub_glyph.ff \
         dup_glyph_vertshift.ff \
+        failkern.py \
         getcvt.ff \
         hflip_glyph.ff \
         inst_acc.py \

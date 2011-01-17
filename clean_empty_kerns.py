@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#  Copyright (C) 2010 Andrey V. Panov
+#  Copyright (C) 2010, 2011 Andrey V. Panov
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -25,9 +25,13 @@ def usage():
   print " -o file, --output=file    	output font file"
   print " -s, --subtable=\"string\"	kerning subtable"
   print " -t, --threshold=int      	remove kern |offsets| <= threshold (default 0)"
+  print " -f, --remove-fail-kern     	remove false kern pairs"
+
+def uni2name(unichar):
+  return font[font.findEncodingSlot(ord(unichar))].glyphname
 
 try:
-  opts, args = getopt.getopt(sys.argv[1:], "hi:s:o:t:", ["help", "input=", "subtable=", "output=", "threshold="])
+  opts, args = getopt.getopt(sys.argv[1:], "hi:s:o:t:f", ["help", "input=", "subtable=", "output=", "threshold=","remove-fail-kern"])
 except getopt.GetoptError, err:
   print "unrecognized option"
   usage()
@@ -37,6 +41,7 @@ font_name = None
 kern_table = "LGC kerning subtable"
 kern_look = "LGC kerning"
 threshold = 0
+remfailkern = 0
 for (o, a) in opts:
   if o in ("-i", "--input"):
     font_name = a
@@ -49,12 +54,21 @@ for (o, a) in opts:
     kern_table = a
   elif o in ("-t", "--threshold"):
     threshold = int(a)
+  elif o in ("-f", "--remove-fail-kern"):
+    remfailkern = 1
 
 if not outfile:
   outfile = font_name
 #font_name = sys.argv[1]
 font = fontforge.open(font_name)
 font = fontforge.activeFont()
+
+failkerns = ('.notdef', '.notdef'),
+if remfailkern:
+  import failkern
+  for (b, c) in failkern.failkerns_u:
+    failkerns += (uni2name(b), uni2name(c)),
+
 font.selection.all()
 selection = font.selection.byGlyphs
 for glyf in selection:
@@ -67,10 +81,16 @@ for glyf in selection:
       for subtable in oldtable:
         if subtable[1] == 'Pair':
           temp = abs(subtable[5])
-          if temp > threshold:
-	    newtable += subtable,
-	  elif temp <= threshold:
+	  if temp <= threshold:
 	    changekern = 1
+	  elif remfailkern:
+	    if (glyf.glyphname, subtable[2]) in failkerns:
+	      #print (glyf.glyphname, subtable[2])
+	      changekern = 1
+	    else:
+	      newtable += subtable,
+          elif temp > threshold:
+	    newtable += subtable,
       if changekern:
         glyf.removePosSub(kern_table)
         for subtable in newtable:

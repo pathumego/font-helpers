@@ -31,7 +31,7 @@ first_name = GlyphInfo("Name")
 SelectByPosSub("LGC kerning subtable",1)
 SelectFewerSingletons("T","Tcommaaccent","Tcaron","Thook","Trthook","uni021A",\
  "Tbar","Gamma","Tau",\
- "Ge","Te","Ghe.up","EnGe","Tertdes","uni04F6","uni04FA",\
+ "Ge","Te","U.cyr","Ghe.up","EnGe","Tertdes","uni04F6","uni04FA",\
  "Tdotaccent","Tdotbelow","Tlinebelow","Tcircumflexbelow")
 SelectFewerSingletons("quotesingle","quotedblleft","quoteleft")
 i = 1
