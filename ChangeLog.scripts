@@ -1,3 +1,12 @@
+2011-01-18 Andrey V. Panov
+	Added scripts for making subscript figures from superscript ones,
+	addition of anchors to smallcaps, making accented smallcap glyphs using 
+	anchors,  vulgar fractions from superscript figures and fraction sign.
+	Added python script removing empty or small and senseless kerning pairs 
+	from font.
+	Fixed issues.
+	Version 1.1 is released.
+
 2010-10-26 Andrey V. Panov
 	Version 1.0 is released.
 
