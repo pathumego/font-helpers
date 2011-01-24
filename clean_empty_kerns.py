@@ -28,7 +28,11 @@ def usage():
   print " -f, --remove-fail-kern     	remove false kern pairs"
 
 def uni2name(unichar):
-  return font[font.findEncodingSlot(ord(unichar))].glyphname
+  i = font.findEncodingSlot(ord(unichar))
+  if i in font: 
+    return font[i].glyphname
+  else:
+    return ""
 
 try:
   opts, args = getopt.getopt(sys.argv[1:], "hi:s:o:t:f", ["help", "input=", "subtable=", "output=", "threshold=","remove-fail-kern"])
@@ -62,12 +66,16 @@ if not outfile:
 #font_name = sys.argv[1]
 font = fontforge.open(font_name)
 font = fontforge.activeFont()
+font.encoding = "unicode"
 
 failkerns = ('.notdef', '.notdef'),
 if remfailkern:
   import failkern
   for (b, c) in failkern.failkerns_u:
-    failkerns += (uni2name(b), uni2name(c)),
+    b_u = uni2name(b)
+    c_u = uni2name(c)
+    if b_u and c_u:
+      failkerns += (b_u, c_u),
 
 font.selection.all()
 selection = font.selection.byGlyphs
@@ -75,7 +83,6 @@ for glyf in selection:
   if glyf.isWorthOutputting:
     oldtable = glyf.getPosSub(kern_table)
     if len(oldtable):
-      #print oldtable
       newtable = ()
       changekern = 0
       for subtable in oldtable:
@@ -85,7 +92,6 @@ for glyf in selection:
 	    changekern = 1
 	  elif remfailkern:
 	    if (glyf.glyphname, subtable[2]) in failkerns:
-	      #print (glyf.glyphname, subtable[2])
 	      changekern = 1
 	    else:
 	      newtable += subtable,
@@ -94,7 +100,6 @@ for glyf in selection:
       if changekern:
         glyf.removePosSub(kern_table)
         for subtable in newtable:
-          #print subtable
           glyf.addPosSub(subtable[0],subtable[2],subtable[3],\
           subtable[4],subtable[5],subtable[6],subtable[7],\
           subtable[8],subtable[9],subtable[10])
