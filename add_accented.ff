@@ -104,6 +104,7 @@ SelectMore(0u22E,0u22F) #o_dotaccent
 SelectMore(0u232,0u233) #ymacron
 SelectMoreSingletons(0u400,0u403,0u40C,0u40D,0u450,0u453,0u45C,0u45D)
 SelectMore(0u4C1,0u4C2)
+SelectMore(0u4D0,0u4D1)
 SelectMore(0u4D6,0u4D7)
 SelectMore(0u4DA,0u4DF)
 SelectMore(0u4E2,0u4E5)
