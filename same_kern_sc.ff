@@ -41,7 +41,7 @@ common_gl=["space","exclam","quotesingle","parenleft","parenright","comma",\
            "hyphen","period","colon","semicolon","question","bracketleft",\
            "bracketright","braceleft","braceright","guillemotleft",\
            "guillemotright","endash","emdash","quotedblleft","quotedblright",\
-           "quotedblbase","ellipsis"]
+           "quotedblbase","quoteright","ellipsis"]
 
 size_sc = SizeOf(latin_gl)
 latin_gl = latin_gl + common_gl
