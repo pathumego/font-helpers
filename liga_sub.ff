@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Andrey V. Panov 
+ * Copyright (C) 2009, 2011 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,6 +47,56 @@ if(WorthOutputting("ffl"))
  Select("ffl")
  AddPosSub(lat_lang_liga,"f f l")
  AddPosSub(lat_lang_liga,"ff l")
+endif
+if(WorthOutputting("f_b"))
+ Select("f_b")
+ AddPosSub(lat_lang_liga,"f b")
+endif
+if(WorthOutputting("f_h"))
+ Select("f_h")
+ AddPosSub(lat_lang_liga,"f h")
+endif
+if(WorthOutputting("f_j"))
+ Select("f_j")
+ AddPosSub(lat_lang_liga,"f j")
+endif
+if(WorthOutputting("f_k"))
+ Select("f_k")
+ AddPosSub(lat_lang_liga,"f k")
+endif
+if(WorthOutputting("f_t"))
+ Select("f_t")
+ AddPosSub(lat_lang_liga,"f t")
+endif
+if(WorthOutputting("f_f_b"))
+ Select("f_f_b")
+ AddPosSub(lat_lang_liga,"f f b")
+ AddPosSub(lat_lang_liga,"ff b")
+endif
+if(WorthOutputting("f_f_h"))
+ Select("f_f_h")
+ AddPosSub(lat_lang_liga,"f f h")
+ AddPosSub(lat_lang_liga,"ff h")
+endif
+if(WorthOutputting("f_f_h"))
+ Select("f_f_h")
+ AddPosSub(lat_lang_liga,"f f h")
+ AddPosSub(lat_lang_liga,"ff h")
+endif
+if(WorthOutputting("f_f_j"))
+ Select("f_f_j")
+ AddPosSub(lat_lang_liga,"f f j")
+ AddPosSub(lat_lang_liga,"ff j")
+endif
+if(WorthOutputting("f_f_k"))
+ Select("f_f_k")
+ AddPosSub(lat_lang_liga,"f f k")
+ AddPosSub(lat_lang_liga,"ff k")
+endif
+if(WorthOutputting("f_f_t"))
+ Select("f_f_t")
+ AddPosSub(lat_lang_liga,"f f t")
+ AddPosSub(lat_lang_liga,"ff t")
 endif
 if(WorthOutputting("ij"))
  lat_nld_lang_liga =  "Latin Dutch ligatures subtable"
@@ -99,4 +149,80 @@ endif
 if(WorthOutputting("Aogonek"))
  Select("Aogonek")
  AddPosSub(lat_lang_liga,"A uni0328")
+endif
+if(WorthOutputting("longs_longs"))
+ Select("longs_longs")
+ AddPosSub(lat_lang_liga,"longs longs")
+endif
+if(WorthOutputting("longs_i"))
+ Select("longs_i")
+ AddPosSub(lat_tur_lang_liga,"longs i")
+endif
+if(WorthOutputting("longs_l"))
+ Select("longs_l")
+ AddPosSub(lat_lang_liga,"longs l")
+endif
+if(WorthOutputting("longs_longs_i"))
+ Select("longs_longs_i")
+ AddPosSub(lat_tur_lang_liga,"longs longs i")
+ AddPosSub(lat_tur_lang_liga,"longs_longs i")
+endif
+if(WorthOutputting("longs_longs_l"))
+ Select("longs_longs_l")
+ AddPosSub(lat_lang_liga,"longs longs l")
+ AddPosSub(lat_lang_liga,"longs_longs l")
+endif
+if(WorthOutputting("longs_b"))
+ Select("longs_b")
+ AddPosSub(lat_lang_liga,"longs b")
+endif
+if(WorthOutputting("longs_f"))
+ Select("longs_f")
+ AddPosSub(lat_lang_liga,"longs f")
+endif
+if(WorthOutputting("longs_h"))
+ Select("longs_h")
+ AddPosSub(lat_lang_liga,"longs h")
+endif
+if(WorthOutputting("longs_j"))
+ Select("longs_j")
+ AddPosSub(lat_lang_liga,"longs j")
+endif
+if(WorthOutputting("longs_k"))
+ Select("longs_k")
+ AddPosSub(lat_lang_liga,"longs k")
+endif
+if(WorthOutputting("longs_t"))
+ Select("longs_t")
+ AddPosSub(lat_lang_liga,"longs t")
+endif
+if(WorthOutputting("longs_longs_b"))
+ Select("longs_longs_b")
+ AddPosSub(lat_lang_liga,"longs longs b")
+ AddPosSub(lat_lang_liga,"longs_longs b")
+endif
+if(WorthOutputting("longs_longs_h"))
+ Select("longs_longs_h")
+ AddPosSub(lat_lang_liga,"longs longs h")
+ AddPosSub(lat_lang_liga,"longs_longs h")
+endif
+if(WorthOutputting("longs_longs_h"))
+ Select("longs_longs_h")
+ AddPosSub(lat_lang_liga,"longs longs h")
+ AddPosSub(lat_lang_liga,"longs_longs h")
+endif
+if(WorthOutputting("longs_longs_j"))
+ Select("longs_longs_j")
+ AddPosSub(lat_lang_liga,"longs longs j")
+ AddPosSub(lat_lang_liga,"longs_longs j")
+endif
+if(WorthOutputting("longs_longs_k"))
+ Select("longs_longs_k")
+ AddPosSub(lat_lang_liga,"longs longs k")
+ AddPosSub(lat_lang_liga,"longs_longs k")
+endif
+if(WorthOutputting("longs_longs_t"))
+ Select("longs_longs_t")
+ AddPosSub(lat_lang_liga,"longs longs t")
+ AddPosSub(lat_lang_liga,"longs_longs t")
 endif
