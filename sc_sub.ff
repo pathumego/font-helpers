@@ -78,4 +78,8 @@ endif
 if (WorthOutputting("ffl") && InFont("FFL.sc"))
  Select("ffl"); AddPosSub(lc_lang_smcp,"FFL.sc");
 endif
+
+if (WorthOutputting("longs") && InFont("S.sc"))
+ Select("longs"); AddPosSub(lc_lang_smcp,"S.sc");
+endif
 SelectNone()
