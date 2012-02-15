@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Andrey V. Panov 
+ * Copyright (C) 2008, 2012 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,15 +15,32 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-if ($italicangle != 0)
- AddLookup("Italic substitutions", "gsub_single", 0, [["locl",[["cyrl",["MKD ","SRB "]]]]])
- AddLookupSubtable("Italic substitutions", "Italic substitutions cyr")
+serb_table="Serbian substitutions"
+serb_subtable="Serbian substitutions subtable"
+
+if (WorthOutputting("ghe.ital") || WorthOutputting("be.alt") || \
+    WorthOutputting("de.ital") || WorthOutputting("pe.ital") || \
+    WorthOutputting("te.ital"))
+ AddLookup(serb_table, "gsub_single", 0, [["locl",[["cyrl",["MKD ","SRB "]]]]])
+ AddLookupSubtable(serb_table, serb_subtable)
+endif
+if (WorthOutputting("ghe.ital") && InFont("ghe.ital"))
  Select("afii10068") # Cyrillic g
- AddPosSub("Italic substitutions cyr","ghe.ital") # afii10063
- Select("afii10069") # Cyrillic g
- AddPosSub("Italic substitutions cyr","de.ital") # afii10063
+ AddPosSub(serb_subtable,"ghe.ital") # afii10063
+endif
+if (WorthOutputting("be.alt") && InFont("be.alt"))
+ Select("afii10066") # Cyrillic b
+ AddPosSub(serb_subtable,"be.alt") # afii10064
+endif
+if (WorthOutputting("de.ital") && InFont("de.ital"))
+ Select("afii10069") # Cyrillic d
+ AddPosSub(serb_subtable,"de.ital") # afii10192
+endif
+if (WorthOutputting("pe.ital") && InFont("pe.ital"))
  Select("afii10081") # Cyrillic p
- AddPosSub("Italic substitutions cyr","pe.ital") # afii10831
+ AddPosSub(serb_subtable,"pe.ital") # afii10831
+endif
+if (WorthOutputting("te.ital") && InFont("te.ital"))
  Select("afii10084") # Cyrillic t
- AddPosSub("Italic substitutions cyr","te.ital") # afii10832
+ AddPosSub(serb_subtable,"te.ital") # afii10832
 endif
