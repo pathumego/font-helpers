@@ -82,4 +82,12 @@ endif
 if (WorthOutputting("longs") && InFont("S.sc"))
  Select("longs"); AddPosSub(lc_lang_smcp,"S.sc");
 endif
+
+# map Cyrillic letter palochka to "afii10055.sc" (like I.sc)
+if (WorthOutputting(0u4CF) && InFont("afii10055.sc"))
+ Select(0u4CF); AddPosSub(lc_lang_smcp,"afii10055.sc");
+endif
+if (WorthOutputting(0u4C0) && InFont("afii10055.sc"))
+ Select(0u4C0); AddPosSub(lc_lang_c2sc,"afii10055.sc");
+endif
 SelectNone()
