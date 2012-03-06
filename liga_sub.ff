@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009, 2011 Andrey V. Panov 
+ * Copyright (C) 2009, 2011, 2012 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -225,4 +225,80 @@ if(WorthOutputting("longs_longs_t"))
  Select("longs_longs_t")
  AddPosSub(lat_lang_liga,"longs longs t")
  AddPosSub(lat_lang_liga,"longs_longs t")
+endif
+if(WorthOutputting("esh_esh"))
+ Select("esh_esh")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283")
+endif
+if(WorthOutputting("esh_i"))
+ Select("esh_i")
+ AddPosSub(lat_tur_lang_liga,"uni0283 i")
+endif
+if(WorthOutputting("esh_l"))
+ Select("esh_l")
+ AddPosSub(lat_lang_liga,"uni0283 l")
+endif
+if(WorthOutputting("esh_esh_i"))
+ Select("esh_esh_i")
+ AddPosSub(lat_tur_lang_liga,"uni0283 uni0283 i")
+ AddPosSub(lat_tur_lang_liga,"esh_esh i")
+endif
+if(WorthOutputting("esh_esh_l"))
+ Select("esh_esh_l")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 l")
+ AddPosSub(lat_lang_liga,"esh_esh l")
+endif
+if(WorthOutputting("esh_b"))
+ Select("esh_b")
+ AddPosSub(lat_lang_liga,"uni0283 b")
+endif
+if(WorthOutputting("esh_f"))
+ Select("esh_f")
+ AddPosSub(lat_lang_liga,"uni0283 f")
+endif
+if(WorthOutputting("esh_h"))
+ Select("esh_h")
+ AddPosSub(lat_lang_liga,"uni0283 h")
+endif
+if(WorthOutputting("esh_j"))
+ Select("esh_j")
+ AddPosSub(lat_lang_liga,"uni0283 j")
+endif
+if(WorthOutputting("esh_k"))
+ Select("esh_k")
+ AddPosSub(lat_lang_liga,"uni0283 k")
+endif
+if(WorthOutputting("esh_t"))
+ Select("esh_t")
+ AddPosSub(lat_lang_liga,"uni0283 t")
+endif
+if(WorthOutputting("esh_esh_b"))
+ Select("esh_esh_b")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 b")
+ AddPosSub(lat_lang_liga,"esh_esh b")
+endif
+if(WorthOutputting("esh_esh_h"))
+ Select("esh_esh_h")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 h")
+ AddPosSub(lat_lang_liga,"esh_esh h")
+endif
+if(WorthOutputting("esh_esh_h"))
+ Select("esh_esh_h")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 h")
+ AddPosSub(lat_lang_liga,"esh_esh h")
+endif
+if(WorthOutputting("esh_esh_j"))
+ Select("esh_esh_j")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 j")
+ AddPosSub(lat_lang_liga,"esh_esh j")
+endif
+if(WorthOutputting("esh_esh_k"))
+ Select("esh_esh_k")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 k")
+ AddPosSub(lat_lang_liga,"esh_esh k")
+endif
+if(WorthOutputting("esh_esh_t"))
+ Select("esh_esh_t")
+ AddPosSub(lat_lang_liga,"uni0283 uni0283 t")
+ AddPosSub(lat_lang_liga,"esh_esh t")
 endif
