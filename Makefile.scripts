@@ -44,6 +44,7 @@ FFSCRIPTS=add_accented.ff \
         make_dup_vertshift.ff \
         make_frac.ff \
         make_kern.ff \
+        make_kern_latin1.ff \
         make_kern_sc.ff \
         make_superscript.ff \
         mergekern.ff \

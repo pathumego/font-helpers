@@ -1,0 +1,37 @@
+/*
+ * Copyright (C) 2012 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for copying kerning info from Basic
+# Latin to accented letters of Latin1 charset
+
+cop_kern_mult.ff("A","Agrave","Aacute","Acircumflex","Atilde","Adieresis","Aring")
+cop_kern.ff("C","Ccedilla")
+cop_kern_mult.ff("E","Egrave","Eacute","Ecircumflex","Edieresis")
+cop_kern_mult.ff("I","Igrave","Iacute","Icircumflex","Idieresis")
+cop_kern.ff("N","Ntilde")
+cop_kern_mult.ff("O","Ograve","Oacute","Ocircumflex","Otilde","Odieresis")
+cop_kern_mult.ff("U","Ugrave","Uacute","Ucircumflex","Udieresis")
+cop_kern.ff("Y","Yacute")
+
+cop_kern_acc.ff("a","agrave","aacute","acircumflex","atilde","adieresis","aring")
+cop_kern.ff("c","ccedilla")
+cop_kern_acc.ff("e","egrave","eacute","ecircumflex","edieresis")
+cop_kern_acc.ff("i","igrave","iacute","icircumflex","idieresis")
+cop_kern_acc.ff("n","ntilde")
+cop_kern_acc.ff("o","ograve","oacute","ocircumflex","otilde","odieresis")
+cop_kern_acc.ff("u","ugrave","uacute","ucircumflex","udieresis")
+cop_kern_acc.ff("y","yacute","ydieresis")
