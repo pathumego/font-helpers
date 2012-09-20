@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2010 Andrey V. Panov 
+ * Copyright (C) 2008-2010, 2012 Andrey V. Panov 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,11 @@ SetWidth(width)
  # Droid and Dejavu - emdash/10
  Select("uni200A") 
  SetWidth(Round(width/18.0))
- Select("uni200B","uni200D") 
- SetWidth(0)
+ # MEDIUM MATHEMATICAL SPACE
+ Select(0u205F) 
+ SetWidth(Round(width*2.0/9.0))
+# Select("uni200B","uni200D") 
+# SetWidth(0)
 # Select("A")
 # width = -GlyphInfo("Kern","C") # Thinest kerning pair
 # if (width > 0)
@@ -73,5 +76,13 @@ Select("period")
 width = GlyphInfo("Width")
 Select("uni2008") # punctuation space
 SetWidth(width)
+# NARROW NO-BREAK SPACE
+dub_glyph.ff(0u2009,0u202F)
+
+# format zero width characters
+Select(0u200B,0u200F)
+SelectMore(0u2028,0u202E)
+SelectMore(0u2060,0u206F)
+SetWidth(0)
 
 Reencode("unicode")
