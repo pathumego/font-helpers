@@ -31,11 +31,28 @@ while (i < size_f)
  if (features[i][1] == "Pair")
   j = 3
   while ( j < $argc)
-   if ( WorthOutputting($argv[j]) )
-    Select($argv[j])
-    AddPosSub(features[i][0],features[i][2],features[i][3],features[i][4],\
-    features[i][5]+x_shift,features[i][6],features[i][7],features[i][8],features[i][9],\
-    features[i][10])
+   if ( WorthOutputting($argv[j]))
+    first_glyph_name = adobe_name.ff($argv[j])
+    Select(first_glyph_name)
+    glyph_name = adobe_name.ff(features[i][2])
+    features2 =  GetPosSub("*")
+    size_f2 = SizeOf(features2)
+    k = 0
+    kern = 0
+    while (k < size_f2)
+     if (features2[k][1] == "Pair")
+      if (features2[k][2] == glyph_name)
+       kern = 1
+      endif
+     endif
+     k++
+    endloop
+    if (kern == 0)
+     AddPosSub(features[i][0],glyph_name,features[i][3],features[i][4],\
+     features[i][5]+x_shift,features[i][6],features[i][7],features[i][8],features[i][9],\
+     features[i][10])
+     #SetKern(glyph_name, features[i][5]+x_shift, features[i][0])
+    endif
    endif
   j++
   endloop

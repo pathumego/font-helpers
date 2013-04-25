@@ -15,22 +15,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-# This fontforge script proposed for addiing the kern pair between the first and
-# second glyph
-
-# _kern_subtable = "LGC kerning subtable"
-
-first_glyph = $1;
-second_glyph = $2;
-# $3 is the kerning distance
-
-if (WorthOutputting(first_glyph) && WorthOutputting(second_glyph))
- first_glyph_name = adobe_name.ff(first_glyph)
- Select(first_glyph_name)
- glyph_name = adobe_name.ff(second_glyph)
- kern = GlyphInfo("Kern", glyph_name)
- if (kern == 0)
-  #SetKern(glyph_name, $3, _kern_subtable)
-  AddPosSub(_kern_subtable,glyph_name,0,0,$3,0,0,0,0,0)
- endif
+tmp = UnicodeFromName($1)
+if (tmp > 0)
+ return NameFromUnicode(tmp,"Adobe Glyph List")
+else
+ return $1
 endif

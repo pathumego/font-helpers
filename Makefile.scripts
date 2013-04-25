@@ -11,6 +11,7 @@ FFSCRIPTS=add_accented.ff \
         add_private.ff \
         add_subfigs.ff \
         add_supnum.ff \
+        adobe_name.ff \
         alt_sub.ff \
         anchors.ff \
         anchors_sc.ff \
