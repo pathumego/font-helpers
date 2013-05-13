@@ -30,7 +30,7 @@ if (WorthOutputting(first_glyph) && WorthOutputting(second_glyph))
  glyph_name = adobe_name.ff(second_glyph)
  kern = GlyphInfo("Kern", glyph_name)
  if (kern == 0)
-  #SetKern(glyph_name, $3, _kern_subtable)
-  AddPosSub(_kern_subtable,glyph_name,0,0,$3,0,0,0,0,0)
+  SetKern(glyph_name, $3, _kern_subtable)
+  #AddPosSub(_kern_subtable,glyph_name,0,0,$3,0,0,0,0,0)
  endif
 endif
