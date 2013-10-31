@@ -31,6 +31,7 @@ FFSCRIPTS=add_accented.ff \
         dub_glyph_ch.ff \
         dub_glyph.ff \
         dup_glyph_vertshift.ff \
+        ellipsis.ff \
         failkern.py \
         getcvt.ff \
         hflip_glyph.ff \

@@ -1,0 +1,67 @@
+/*
+ * Copyright (C) 2013 Andrey V. Panov 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+# This fontforge script proposed for making ellipsis and twodotenleader from period
+
+if (WorthOutputting("ellipsis") && ! WorthOutputting("period") )
+ return
+endif
+
+if ($argc > 1)
+ width = $1 # set the width of ellipsis
+else
+ if (! WorthOutputting("emdash") )
+  return
+ endif
+ Select("emdash")
+ width = GlyphInfo("Width")
+endif
+
+Select("period")
+pwidth = GlyphInfo("Width")
+elshift = width/3.0
+leftshift = 0.5*(width/3.0 - pwidth)
+CopyReference()
+Select("ellipsis")
+Paste()
+Move(elshift,0)
+PasteInto()
+Move(elshift,0)
+PasteInto()
+Move(leftshift,0)
+SetWidth(width)
+RoundToInt()
+CanonicalContours()
+SetKern("period", Round(leftshift), _kern_subtable)
+
+if (WorthOutputting("twodotenleader") )
+ return
+endif
+
+Select("twodotenleader")
+Paste()
+Move(elshift,0)
+PasteInto()
+Move(leftshift,0)
+SetWidth(Round(width*2/3.0))
+RoundToInt()
+CanonicalContours()
+SetKern("period", Round(leftshift), _kern_subtable)
+
+
+
+
