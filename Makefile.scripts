@@ -8,6 +8,7 @@ FFSCRIPTS=add_accented.ff \
         add_anchor_y.ff \
         add_fracs.ff \
         add_ipa.ff \
+        add_kern_pair.ff \
         add_private.ff \
         add_subfigs.ff \
         add_supnum.ff \

@@ -76,7 +76,7 @@ while (i < size_ar)
  if ( WorthOutputting(latin_gl_sc[i]) && WorthOutputting(cyr_gl_sc[i]))
   j = 0
   while (j < size_ar)
-   if ( (i != j) && !(i > size_sc && j > size_sc) && (latin_gl_sc[j] != ".") && (cyr_gl_sc[j] != "."))
+   if ( !(i > size_sc && j > size_sc) && (latin_gl_sc[j] != ".") && (cyr_gl_sc[j] != "."))
    if ( WorthOutputting(latin_gl_sc[j]) && WorthOutputting(cyr_gl_sc[j]))
     Select(latin_gl_sc[i])
     kern = GlyphInfo("Kern", latin_gl_sc[j])

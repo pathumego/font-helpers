@@ -1,3 +1,18 @@
+2013-12-28 Andrey V. Panov
+	Build U+4D0,U+4D1.
+	Copy kern pairs with "quoteright".
+	Add more Latin "liga" substitutions.
+	Add substitutions for ligatures with "esh".
+	Excluded "V" and "Y" from copying kerning for accented letters.
+	Added a script for copying kerning info from the basic Latin to accented
+	letters of Latin1 charset.
+	Added more spaces and joiner characters.
+	Added add_kern_pair.ff.
+	Added a script for glyph name conversion to AGL.
+	Added a script for making ellipsis and twodotenleader from period.
+	Fixes.
+	Version 1.2 is released.
+
 2011-04-04 Andrey V. Panov
 	A fix to clean_empty_kerns.py.
 	Build U+400, U+40D, U+450, U+45D.
