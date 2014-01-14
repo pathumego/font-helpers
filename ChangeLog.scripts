@@ -1,3 +1,7 @@
+2014-01-15 Andrey V. Panov
+	Added more checks in ellipsis.ff.
+	Version 1.2.1 is released.
+
 2013-12-28 Andrey V. Panov
 	Build U+4D0,U+4D1.
 	Copy kern pairs with "quoteright".
