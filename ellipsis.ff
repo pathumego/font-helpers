@@ -17,7 +17,7 @@
 
 # This fontforge script proposed for making ellipsis and twodotenleader from period
 
-if (WorthOutputting("ellipsis") && ! WorthOutputting("period") )
+if (! WorthOutputting("period") )
  return
 endif
 
@@ -36,17 +36,19 @@ pwidth = GlyphInfo("Width")
 elshift = width/3.0
 leftshift = 0.5*(width/3.0 - pwidth)
 CopyReference()
-Select("ellipsis")
-Paste()
-Move(elshift,0)
-PasteInto()
-Move(elshift,0)
-PasteInto()
-Move(leftshift,0)
-SetWidth(width)
-RoundToInt()
-CanonicalContours()
-SetKern("period", Round(leftshift), _kern_subtable)
+if (! WorthOutputting("ellipsis"))
+ Select("ellipsis")
+ Paste()
+ Move(elshift,0)
+ PasteInto()
+ Move(elshift,0)
+ PasteInto()
+ Move(leftshift,0)
+ SetWidth(width)
+ RoundToInt()
+ CanonicalContours()
+ SetKern("period", Round(leftshift), _kern_subtable)
+endif
 
 if (WorthOutputting("twodotenleader") )
  return
